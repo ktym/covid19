@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AY.29</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script>
     // JIS X 0401
@@ -63,12 +67,12 @@
     //const canvas = {"width": 7680, "height": 1000}
     const canvas = {"width": 2500, "height": 1000}
     const margin = {"top": 50, "bottom": 90, "left": 90, "right": 10}
+    const color = d3.scaleOrdinal(d3.schemeTableau10);
 
     // All data
-    const tsv = "ay29.tsv"
-
-    //const color = d3.scaleOrdinal(d3.schemeDark2);
-    const color = d3.scaleOrdinal(d3.schemeTableau10);
+    //const tsv = "ay29.tsv"
+    // Subset data (n > 10)
+    const tsv = "ay29_over10.tsv";
 
     /*
       Code
@@ -86,6 +90,7 @@
         prefecture: row.prefecture
       }
     }).then(dataset => {
+      data.selected = Array.from(data.haplotypes);
       data.points = dataset;
       scaleX.domain([
         d3.min(dataset, d => d.firstday),
@@ -104,8 +109,28 @@
       drawArea();
       drawAxes();
       drawHaplolink();
-      drawDumbell(4, 2);
+      drawHaplotype();
       drawTooltips();
+    }
+
+    function addEventHandlers() {
+      d3.select("#haplotype")
+        .on("change", changeHaplotype);
+      d3.select("#duration")
+        .on("change", changeDuration);
+      d3.select("#haplolink")
+        .on("change", changeHaplolink);
+    }
+
+    function createHaplotypeMenu() {
+      let options = Array.from(data.haplotypes);
+      options.unshift("All");
+      d3.select("#haplotype")
+        .selectAll("option")
+        .data(options)
+        .join("option")
+        .attr("value", d => d)
+        .text(d => d);
     }
 
     function drawArea() {
@@ -200,37 +225,111 @@
             .attr("class", "y-axis")
             .attr("transform", `translate(${[canvas.width - (margin.left + margin.right), 0]})`)
             .call(axisY);
-      // X axis caption
+    }
+
+    function drawHaplotype(r = 4, w = 2) {
+      let points = data.points.filter(d => data.selected.includes(d.haplotype));
+      wipeHaplotype();
+      drawDuration(points, w);
+      drawFirstday(points, r);
+      drawLastday(points, r);
+      changeDuration();
+    }
+
+    function wipeHaplotype() {
+      wipeSelector(".firstday");
+      wipeSelector(".lastday");
+      wipeSelector(".duration");
+    }
+
+    function drawDuration(points, w) {
+      for (let point of points) {
+        d3.select("svg")
+          .append("path")
+          .datum(point)
+          .attr("class", "duration")
+          .attr("fill", "none")
+          .attr("stroke", color(point.haplotype))
+          //.attr("stroke-width", w)
+          .attr("stroke-width", d => Math.log(d.total))
+          .attr("d", duration(point))
+          .on("click", d => toggleHaplotype(d.haplotype));
+      }
+    }
+
+    function duration(d) {
+      x1 = scaleX(d.firstday);
+      x2 = scaleX(d.lastday);
+      y = scaleY(48 - pref47[d.prefecture].code);
+      return d3.line()([[x1,y], [x2,y]]);
+    }
+
+    function drawFirstday(points, r) {
       d3.select("svg")
-        .append("text")
-        .attr("class", "label")
-        .text("Date")
-      //.attr("transform", `translate(${[canvas.width / 2, canvas.height - 3]})`);
-        .attr("transform", `translate(${[canvas.width / 2, canvas.height - 3]})`);
-      // Y axis caption
+        .selectAll("circle.firstday")
+        .data(points)
+        .join("circle")
+        .attr("class", "firstday")
+        .attr("r", r)
+        .attr("cx", d => scaleX(d.firstday))
+        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
+        .on("click", d => toggleHaplotype(d.haplotype))
+        .on("mouseover", showTooltips)
+        .on("mouseleave", hideTooltips);
+      d3.selectAll(".firstday")
+        .style("fill", d => color(d.haplotype));
+    }
+
+    function drawLastday(points, r) {
       d3.select("svg")
-        .append("text")
-        .attr("class", "label")
-        .text("Prefecture")
-        .attr("transform", `translate(${[10, canvas.height / 2]}) rotate(-90)`);
+        .selectAll("circle.lastday")
+        .data(points)
+        .join("circle")
+        .attr("class", "lastday")
+        .attr("r", r)
+        .attr("cx", d => scaleX(d.lastday))
+        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
+        .on("click", d => toggleHaplotype(d.haplotype))
+        .on("mouseover", showTooltips)
+        .on("mouseleave", hideTooltips);
+      d3.selectAll(".lastday")
+        .style("fill", d => color(d.haplotype));
+    }
+
+    function toggleHaplotype(haplotype) {
+      if (data.selected[0] == haplotype && ! data.selected[1]) {
+        data.selected = Array.from(data.haplotypes);
+      } else {
+        data.selected = [ haplotype ];
+      }
+      wipeTooltips();
+      drawHaplolink();
+      drawHaplotype();
+      drawTooltips();
+    }
+
+    function changeDuration() {
+      if (d3.select("#duration").property("checked")) {
+        showSelector(".duration");
+        showSelector(".lastday");
+      } else {
+        hideSelector(".duration");
+        hideSelector(".lastday");
+      }
+    }
+
+    function changeHaplotype() {
+      data.selected = Array.from(this.options).filter(d => d.selected).map(d => d.value);
+      if (data.selected.includes("All") || data.selected.size == 0) {
+        data.selected = Array.from(data.haplotypes);
+      }
+      drawHaplolink();
+      drawHaplotype();
     }
 
     function drawHaplolink() {
       wipeHaplolink();
-      let haplotypes = data.haplotypes;
-      let haplotype = d3.select("#haplotype").node().value;
-      if (haplotype == "All") {
-        haplotypes = data.haplotypes;
-      } else {
-        haplotypes = [ haplotype ];
-      }
-/*
-      let haplotypes = d3.select("#haplotype").nodes().value;
-      if (haplotypes.include("All")) {
-        haplotypes = data.haplotypes;
-      }
-*/
-      for (let haplotype of haplotypes) {
+      for (haplotype of data.selected) {
         let haplopoints = data.points.filter(d => d.haplotype == haplotype);
         d3.select("svg")
           .append("path")
@@ -244,7 +343,7 @@
     }
 
     function wipeHaplolink() {
-      d3.selectAll(".haplolink").remove();
+      wipeSelector(".haplolink");
     }
 
     function haplolink() {
@@ -253,71 +352,18 @@
         .y(d => scaleY(48 - pref47[d.prefecture].code));
     }
 
-    function drawDumbell(r, w) {
-      drawDuration(w);
-      drawFirstday(r);
-      drawLastday(r);
-    }
-
-    function drawFirstday(r) {
-      d3.select("svg")
-        .selectAll("circle.firstday")
-        .data(data.points)
-        .join("circle")
-        .attr("class", "firstday")
-        .attr("r", r)
-        .attr("cx", d => scaleX(d.firstday))
-        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
-//        .on("click", toggleHaplotype)
-        .on("mouseover", showTooltips)
-        .on("mouseleave", hideTooltips);
-      d3.selectAll(".firstday")
-        .style("fill", d => color(d.haplotype));
-      showAllOrSelected(".firstday");
-    }
-
-    function drawLastday(r) {
-      d3.select("svg")
-        .selectAll("circle.lastday")
-        .data(data.points)
-        .join("circle")
-        .attr("class", "lastday")
-        .attr("r", r)
-        .attr("cx", d => scaleX(d.lastday))
-        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
-        .on("mouseover", showTooltips)
-        .on("mouseleave", hideTooltips);
-      d3.selectAll(".lastday")
-        .style("fill", d => color(d.haplotype));
-      hideAll(".lastday");
-    }
-
-    function drawDuration(w) {
-      for (let point of data.points) {
-        d3.select("svg")
-          .append("path")
-          .datum(point)
-          .attr("class", "duration")
-          .attr("fill", "none")
-          .attr("stroke", color(point.haplotype))
-          //.attr("stroke-width", w)
-          .attr("stroke-width", d => Math.log(d.total))
-          .attr("d", duration(point));
+    function changeHaplolink() {
+      wipeHaplolink();
+      if (d3.select("#haplolink").property("checked")) {
+        drawHaplolink();
+        drawHaplotype();
       }
-      hideAll(".duration");
-    }
-
-    function duration(d) {
-      x1 = scaleX(d.firstday);
-      x2 = scaleX(d.lastday);
-      y = scaleY(48 - pref47[d.prefecture].code);
-      return d3.line()([[x1,y], [x2,y]]);
     }
 
     function drawTooltips() {
       const tooltip = d3.select("svg")
             .append("g")
-            .attr("class", "tooltip")
+            .attr("class", "haplotip")
             .attr("opacity", 0)
       tooltip.append("rect")
         .attr("width", 80)
@@ -339,85 +385,32 @@
     }
 
     function showTooltips(d) {
-      d3.select(".tooltip").attr("opacity", 1)
+      d3.select(".haplotip").attr("opacity", 1)
         .attr("transform", `translate(${[scaleX(d.firstday), scaleY(48 - pref47[d.prefecture].code) - 120]})`);
       const labels = [
-        d3.select(".tooltip .tt_haplotype")
+        d3.select(".haplotip .tt_haplotype")
           .text(`Haplotype: ${d.haplotype}`),
-        d3.select(".tooltip .tt_prefecture")
+        d3.select(".haplotip .tt_prefecture")
           .text(`Prefecture: ${pref47[d.prefecture].label}`),
-        d3.select(".tooltip .tt_firstday")
+        d3.select(".haplotip .tt_firstday")
           .text(`First day: ${d3.timeFormat("%Y-%m-%d")(d.firstday)}`),
-        d3.select(".tooltip .tt_lastday")
+        d3.select(".haplotip .tt_lastday")
           .text(`Last day: ${d3.timeFormat("%Y-%m-%d")(d.lastday)}`),
-        d3.select(".tooltip .tt_duration")
+        d3.select(".haplotip .tt_duration")
           .text(`Duration: ${d.duration} day(s)`),
-        d3.select(".tooltip .tt_total")
+        d3.select(".haplotip .tt_total")
           .text(`Total: ${d.total} seq(s)/pref`)
       ]
-      d3.select(".tooltip rect")
+      d3.select(".haplotip rect")
         .attr("width", 10 + d3.max(labels.map(d => d.node().getComputedTextLength())));
     }
 
     function hideTooltips(d) {
-      d3.select(".tooltip").attr("opacity", 0);
+      d3.select(".haplotip").attr("opacity", 0);
     }
 
-    function addEventHandlers() {
-      d3.select("#haplotype")
-        .on("change", toggleHaplotype);
-      d3.select("#duration")
-        .on("change", toggleDuration);
-      d3.select("#haplolink")
-        .on("change", toggleHaplolink);
-    }
-
-    function createHaplotypeMenu() {
-      let haplotypes = Array.from(data.haplotypes);
-      haplotypes.unshift("All");
-      d3.select("#haplotype")
-        .selectAll("option")
-        .data(haplotypes)
-        .join("option")
-        .attr("value", d => d)
-        .text(d => d);
-    }
-
-    function selectHaplotype(d) {
-      let haplotype = d3.select("#haplotype").node().value;
-      if (haplotype == "All") {
-        return true;
-      } else {
-        return d.haplotype == haplotype ? true : false;
-      }
-    }
-
-    function showAllOrSelected(selector) {
-      d3.selectAll(selector).filter(d => selectHaplotype(d))
-        .classed("show", true).classed("hide", false);
-      d3.selectAll(selector).filter(d => ! selectHaplotype(d))
-        .classed("show", false).classed("hide", true);
-    }
-
-    function hideAll(selector) {
-      d3.selectAll(selector)
-        .classed("show", false).classed("hide", true);
-    }
-
-    function toggleHaplotype() {
-      showAllOrSelected(".firstday");
-      toggleDuration();
-      toggleHaplolink();
-    }
-
-    function toggleDuration() {
-      if (d3.select("#duration").property("checked")) {
-        showAllOrSelected(".duration");
-        showAllOrSelected(".lastday");
-      } else {
-        hideAll(".duration");
-        hideAll(".lastday");
-      }
+    function wipeTooltips() {
+      wipeSelector(".haplotip");
     }
 
     function toggleHaplolink() {
@@ -427,27 +420,38 @@
         wipeHaplolink();
       }
     }
+
+    function showSelector(selector) {
+      d3.selectAll(selector)
+        .classed("show", true).classed("hide", false);
+    }
+
+    function hideSelector(selector) {
+      d3.selectAll(selector)
+        .classed("show", false).classed("hide", true);
+    }
+
+    function wipeSelector(selector) {
+      d3.selectAll(selector).remove();
+    }
   </script>
   <style>
-    text {
+    svg text {
       font-family: sans-serif;
       font-size: 7pt;
     }
-    .label {
+    svg .label {
       font-size: 9pt;
       text-anchor: middle;
     }
-    .domain {
+    svg .domain {
       opacity: 0;  /* hide X,Y axes */
     }
-    .x-axis line, .y-axis line {
+    svg .x-axis line, .y-axis line {
       stroke-width: .25;
-/*
-      stroke: rgba(114, 138, 74, 0.5);
-*/
       opacity: 0.3;
     }
-    .area {
+    svg .area {
       opacity: 0.2;
     }
     .show {
@@ -456,13 +460,13 @@
     .hide {
       opacity: 0;
     }
-    .tooltip {
+    .haplotip {
       pointer-events: none;
     }
-    .tooltip text {
+    .haplotip text {
       font-size: 10pt;
     }
-    .tooltip rect {
+    .haplotip rect {
       fill: #eeeeee;
       fill-opacity: 0.7;
       stroke: #eeeeee;
@@ -472,16 +476,46 @@
 </head>
 
 <body>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <span class="navbar-brand">
+        <i class="bi-bar-chart-steps" style="font-size: 1.4rem;"></i>
+        COVID-19 AY.29
+      </span>
 
-<div id="controller">
-  Select haplotype: <select id="haplotype"></select>
-  <input type="checkbox" id="duration"> Duration
-  <input type="checkbox" id="haplolink" checked> Link
-</div>
-<!--svg width="100%" viewBox="0 0 10000 800" /-->
-<!--svg width="100%" height="800" /-->
-<svg width="7680" viewBox="0 0 7680 1000" />
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown-haplotype" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi-node-plus-fill" style="font-size: 1.2rem;"></i>
+          Select AY.29 haplotype(s)
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdown-haplotype" style="opacity: 0.8;">
+          <li>
+            <div class="info" style="margin: 10px;">
+              <i class="bi-info-circle-fill info" style="color: #007bff;"></i>
+              Multiple choice:<br/>
+              <i class="bi-apple" style="color: #6c757d;">Cmd</i> / <i class="bi-windows" style="color: #6c757d;">Ctrl</i> + <i class="bi-mouse2" style="color: #6c757d;">Click</i>
+            </div>
+            <select id="haplotype" class="form-select" style="border: none; padding: 10px" size="30" multiple></select>
+          </li>
+        </ul>
+      </div>
 
+      <span class="text-secondary">Best viewed with a screen resolution of > 2500x1200</span>
 
+      <form class="d-flex">
+        <div class="form-check form-check-inline form-switch">
+          <input type="checkbox" id="duration" class="form-check-input">
+          <label class="form-check-label" for="duration">Duration</label>
+        </div>
+        <div class="form-check form-check-inline form-switch">
+          <input type="checkbox" id="haplolink" class="form-check-input" checked>
+          <label class="form-check-label" for="haplolink">Haplolink</label>
+        </div>
+      </form>
+    </div>
+  </nav>
+  <!--svg width="100%" viewBox="0 0 10000 800" /-->
+  <!--svg width="100%" height="800" /-->
+  <svg width="7680" viewBox="0 0 7680 1000" />
 </body>
 </html>
