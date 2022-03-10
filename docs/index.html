@@ -63,16 +63,20 @@
     /*
       Parameters
     */
-    //const canvas = {"width": 7680, "height": 4320}
-    //const canvas = {"width": 7680, "height": 1000}
-    const canvas = {"width": 2500, "height": 1000}
-    const margin = {"top": 50, "bottom": 90, "left": 90, "right": 10}
-    const color = d3.scaleOrdinal(d3.schemeTableau10);
+    //const canvas = {width: 7680, height: 4320, magic: 11}
+    //const canvas = {width: 7680, height: 1000, magic: 11}
+    const canvas = {width: 2500, height: 1000, magic: 3}
+    const margin = {top: 10, bottom: 90, left: 90, right: 10}
+    const colors = d3.scaleOrdinal(d3.schemeTableau10);
+    const scaleX = d3.scaleTime().range([margin.left, canvas.width - margin.right]);
+    const scaleY = d3.scaleLinear().range([canvas.height - margin.bottom, margin.top]);
+    const oneday = Date.parse("2022-03-10") - Date.parse("2022-03-09")
+    const onerow = scaleY(2) - scaleY(1);
 
     // All data
     //const tsv = "ay29.tsv"
     // Subset data (n > 10)
-    const tsv = "ay29_over10.tsv";
+    const tsv = "ay29_over10.tsv"
 
     /*
       Code
@@ -93,24 +97,23 @@
       data.selected = Array.from(data.haplotypes);
       data.points = dataset;
       scaleX.domain([
-        d3.min(dataset, d => d.firstday),
-        d3.max(dataset, d => d.lastday)
+        d3.min(dataset, d => d.firstday) - oneday,
+        d3.max(dataset, d => d.lastday) + oneday
       ]);
-      scaleY.domain(d3.extent(dataset, d => pref47[d.prefecture].code));
+      scaleY.domain(
+        d3.extent(dataset, d => pref47[d.prefecture].code)
+      );
       draw();
     });
-
-    const scaleX = d3.scaleTime().range([margin.left + margin.right, canvas.width - (margin.left + margin.right)]);
-    const scaleY = d3.scaleLinear().range([canvas.height - (margin.top + margin.bottom), margin.top + margin.bottom]);
 
     function draw() {
       addEventHandlers();
       createHaplotypeMenu();
+      placeInfobox();
       drawArea();
       drawAxes();
       drawHaplolink();
       drawHaplotype();
-      drawTooltips();
     }
 
     function addEventHandlers() {
@@ -131,6 +134,10 @@
         .join("option")
         .attr("value", d => d)
         .text(d => d);
+    }
+
+    function placeInfobox() {
+      d3.select("#infobox").style("margin-left", `${margin.left}px`);
     }
 
     function drawArea() {
@@ -184,20 +191,22 @@
           .attr("y", area.y1 + (scaleY(2) - scaleY(1)) / 2)
           .attr("width", canvas.width - (margin.left + margin.right))
           .attr("height", area.y2 - area.y1)
-          .attr("fill", color(area.name));
+          .attr("fill", colors(area.name));
       }
     }
 
     function drawAxes() {
       const axisX = d3.axisBottom(scaleX)
-        .tickSize(canvas.height - (margin.top + margin.bottom) * 2 + 10)
-        .tickPadding(5)
         .ticks(200)
+        .tickSize(0)
         .tickFormat(d3.timeFormat("%Y-%m-%d"));
+      const axisXgrid = d3.axisBottom(scaleX)
+        .ticks(200)
+        .tickSize(canvas.height - margin.bottom + 10);
       const axisY = d3.axisLeft(scaleY)
-        .tickSize(canvas.width - (margin.left + margin.right) * 2 + 10)
         .tickPadding(5)
         .ticks(50, "c")
+        .tickSize(0)
         .tickFormat(d => {
           for (let pref in pref47) {
             if (pref47[pref].code == 48 - d) {
@@ -205,29 +214,45 @@
             }
           }
         });
-      // X axis label and grid
-      const xG = d3.select("svg")
-            .append("g")
-            .attr("class", "x-axis")
-//            .attr("transform", `translate(${[0, (margin.top + margin.bottom)]})`)
-            .attr("transform", `translate(${[5, (margin.top + margin.bottom)]})`)
-            .call(axisX)
-            .selectAll("text")     // rotate X label
-            .style("text-anchor", "start")
-            .attr("transform", "rotate(90)")
-            .attr("x", canvas.height - (margin.bottom + margin.top) * 2)
-            .attr("y", 0)
-            .attr("dx", "1em")     // border
-            .attr("dy", ".35em");  // base line
-      // Y axis label and grid
-      const yG = d3.select("svg")
-            .append("g")
-            .attr("class", "y-axis")
-            .attr("transform", `translate(${[canvas.width - (margin.left + margin.right), 0]})`)
-            .call(axisY);
+      const axisYgrid = d3.axisLeft(scaleY)
+        .ticks(50, "c")
+        .tickSize(canvas.width - (margin.left + margin.right));
+
+      // X axis label
+      d3.select("svg")
+        .append("g")
+        .attr("class", "axis-x")
+        .call(axisX)
+        // rotate X label
+        .selectAll("text")
+        .style("text-anchor", "start")
+        .attr("transform", "rotate(90)")
+        .attr("x", canvas.height - margin.bottom)
+        .attr("y", 0)
+        .attr("dx", "1.5em")   // padding
+        .attr("dy", ".35em");  // base line
+      // X axis grid
+      d3.select("svg")
+        .append("g")
+        .attr("class", "axis-x-grid")
+        .call(axisXgrid)
+        .selectAll("text").remove();
+      // Y axis label
+      d3.select("svg")
+        .append("g")
+        .attr("class", "axis-y")
+        .attr("transform", `translate(${[margin.left, 0]})`)
+        .call(axisY);
+      // Y axis grid
+      d3.select("svg")
+        .append("g")
+        .attr("class", "axis-y-grid")
+        .attr("transform", `translate(${[canvas.width - margin.right, 0]})`)
+        .call(axisYgrid)
+        .selectAll("text").remove();
     }
 
-    function drawHaplotype(r = 4, w = 2) {
+    function drawHaplotype(r = 5, w = 2) {
       let points = data.points.filter(d => data.selected.includes(d.haplotype));
       wipeHaplotype();
       drawDuration(points, w);
@@ -249,63 +274,20 @@
           .datum(point)
           .attr("class", "duration")
           .attr("fill", "none")
-          .attr("stroke", color(point.haplotype))
+          .attr("stroke", colors(point.haplotype))
           //.attr("stroke-width", w)
           .attr("stroke-width", d => Math.log(d.total))
           .attr("d", duration(point))
+          .on("mouseover", showInfobox)
           .on("click", d => toggleHaplotype(d.haplotype));
       }
     }
 
     function duration(d) {
-      x1 = scaleX(d.firstday);
-      x2 = scaleX(d.lastday);
+      x1 = scaleX(d.firstday) - canvas.magic;
+      x2 = scaleX(d.lastday) - canvas.magic;
       y = scaleY(48 - pref47[d.prefecture].code);
       return d3.line()([[x1,y], [x2,y]]);
-    }
-
-    function drawFirstday(points, r) {
-      d3.select("svg")
-        .selectAll("circle.firstday")
-        .data(points)
-        .join("circle")
-        .attr("class", "firstday")
-        .attr("r", r)
-        .attr("cx", d => scaleX(d.firstday))
-        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
-        .on("click", d => toggleHaplotype(d.haplotype))
-        .on("mouseover", showTooltips)
-        .on("mouseleave", hideTooltips);
-      d3.selectAll(".firstday")
-        .style("fill", d => color(d.haplotype));
-    }
-
-    function drawLastday(points, r) {
-      d3.select("svg")
-        .selectAll("circle.lastday")
-        .data(points)
-        .join("circle")
-        .attr("class", "lastday")
-        .attr("r", r)
-        .attr("cx", d => scaleX(d.lastday))
-        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
-        .on("click", d => toggleHaplotype(d.haplotype))
-        .on("mouseover", showTooltips)
-        .on("mouseleave", hideTooltips);
-      d3.selectAll(".lastday")
-        .style("fill", d => color(d.haplotype));
-    }
-
-    function toggleHaplotype(haplotype) {
-      if (data.selected[0] == haplotype && ! data.selected[1]) {
-        data.selected = Array.from(data.haplotypes);
-      } else {
-        data.selected = [ haplotype ];
-      }
-      wipeTooltips();
-      drawHaplolink();
-      drawHaplotype();
-      drawTooltips();
     }
 
     function changeDuration() {
@@ -316,6 +298,46 @@
         hideSelector(".duration");
         hideSelector(".lastday");
       }
+    }
+
+    function drawFirstday(points, r) {
+      d3.select("svg")
+        .selectAll("circle.firstday")
+        .data(points)
+        .join("circle")
+        .attr("class", "firstday")
+        .attr("r", r)
+        .attr("cx", d => scaleX(d.firstday) - canvas.magic)
+        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
+        .on("click", d => toggleHaplotype(d.haplotype))
+        .on("mouseover", showInfobox);
+      d3.selectAll(".firstday")
+        .style("fill", d => colors(d.haplotype));
+    }
+
+    function drawLastday(points, r) {
+      d3.select("svg")
+        .selectAll("circle.lastday")
+        .data(points)
+        .join("circle")
+        .attr("class", "lastday")
+        .attr("r", r)
+        .attr("cx", d => scaleX(d.lastday) - canvas.magic)
+        .attr("cy", d => scaleY(48 - pref47[d.prefecture].code))
+        .on("click", d => toggleHaplotype(d.haplotype))
+        .on("mouseover", showInfobox);
+      d3.selectAll(".lastday")
+        .style("fill", d => colors(d.haplotype));
+    }
+
+    function toggleHaplotype(haplotype) {
+      if (data.selected[0] == haplotype && ! data.selected[1]) {
+        data.selected = Array.from(data.haplotypes);
+      } else {
+        data.selected = [ haplotype ];
+      }
+      drawHaplolink();
+      drawHaplotype();
     }
 
     function changeHaplotype() {
@@ -348,7 +370,7 @@
 
     function haplolink() {
       return d3.line()
-        .x(d => scaleX(d.firstday))
+        .x(d => scaleX(d.firstday) - canvas.magic)
         .y(d => scaleY(48 - pref47[d.prefecture].code));
     }
 
@@ -360,65 +382,27 @@
       }
     }
 
-    function drawTooltips() {
-      const tooltip = d3.select("svg")
-            .append("g")
-            .attr("class", "haplotip")
-            .attr("opacity", 0)
-      tooltip.append("rect")
-        .attr("width", 80)
-        .attr("height", 120)
-        .attr("rx", 5).attr("ry", 5)
-        .attr("x", 5).attr("y", -5)
-      tooltip.append("text").attr("class", "tt_haplotype")
-        .attr("x", 10).attr("y", 10);
-      tooltip.append("text").attr("class", "tt_prefecture")
-        .attr("x", 10).attr("y", 30);
-      tooltip.append("text").attr("class", "tt_firstday")
-        .attr("x", 10).attr("y", 50);
-      tooltip.append("text").attr("class", "tt_lastday")
-        .attr("x", 10).attr("y", 70);
-      tooltip.append("text").attr("class", "tt_duration")
-        .attr("x", 10).attr("y", 90);
-      tooltip.append("text").attr("class", "tt_total")
-        .attr("x", 10).attr("y", 110);
-    }
-
-    function showTooltips(d) {
-      d3.select(".haplotip").attr("opacity", 1)
-        .attr("transform", `translate(${[scaleX(d.firstday), scaleY(48 - pref47[d.prefecture].code) - 120]})`);
-      const labels = [
-        d3.select(".haplotip .tt_haplotype")
-          .text(`Haplotype: ${d.haplotype}`),
-        d3.select(".haplotip .tt_prefecture")
-          .text(`Prefecture: ${pref47[d.prefecture].label}`),
-        d3.select(".haplotip .tt_firstday")
-          .text(`First day: ${d3.timeFormat("%Y-%m-%d")(d.firstday)}`),
-        d3.select(".haplotip .tt_lastday")
-          .text(`Last day: ${d3.timeFormat("%Y-%m-%d")(d.lastday)}`),
-        d3.select(".haplotip .tt_duration")
-          .text(`Duration: ${d.duration} day(s)`),
-        d3.select(".haplotip .tt_total")
-          .text(`Total: ${d.total} seq(s)/pref`)
-      ]
-      d3.select(".haplotip rect")
-        .attr("width", 10 + d3.max(labels.map(d => d.node().getComputedTextLength())));
-    }
-
-    function hideTooltips(d) {
-      d3.select(".haplotip").attr("opacity", 0);
-    }
-
-    function wipeTooltips() {
-      wipeSelector(".haplotip");
-    }
-
     function toggleHaplolink() {
       if (d3.select("#haplolink").property("checked")) {
         drawHaplolink();
       } else {
         wipeHaplolink();
       }
+    }
+
+    function showInfobox(d) {
+      d3.select("#info_haplotype")
+        .text(d.haplotype);
+      d3.select("#info_prefecture")
+        .text(pref47[d.prefecture].label);
+      d3.select("#info_firstday")
+        .text(d3.timeFormat("%Y-%m-%d")(d.firstday));
+      d3.select("#info_lastday")
+        .text(d3.timeFormat("%Y-%m-%d")(d.lastday));
+      d3.select("#info_duration")
+        .text(`${d.duration} day(s)`);
+      d3.select("#info_total")
+        .text(`${d.total} seq(s)/pref`);
     }
 
     function showSelector(selector) {
@@ -436,18 +420,21 @@
     }
   </script>
   <style>
-    svg text {
+    text {
       font-family: sans-serif;
       font-size: 7pt;
     }
-    svg .label {
+    .label {
       font-size: 9pt;
       text-anchor: middle;
     }
-    svg .domain {
+    .domain {
       opacity: 0;  /* hide X,Y axes */
     }
-    svg .x-axis line, .y-axis line {
+    .axis-x line, .axis-y line {
+      stroke-width: .25;
+    }
+    .axis-x-grid line, .axis-y-grid line {
       stroke-width: .25;
       opacity: 0.3;
     }
@@ -460,6 +447,7 @@
     .hide {
       opacity: 0;
     }
+    /* .tooltip seems to be taken by bootstrap */
     .haplotip {
       pointer-events: none;
     }
@@ -484,7 +472,7 @@
       </span>
 
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown-haplotype" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-haplotype" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi-node-plus-fill" style="font-size: 1.2rem;"></i>
           Select AY.29 haplotype(s)
         </button>
@@ -514,6 +502,32 @@
       </form>
     </div>
   </nav>
+  <div id="infobox" class="btn-group" role="group" aria-label="Infobox" style="margin: 10px">
+    <button type="button" class="btn btn-outline-secondary">
+      Haplotype
+      <span id="info_haplotype" class="badge bg-light text-dark">1</span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Prefecture
+      <span id="info_prefecture" class="badge bg-light text-dark">神奈川県</span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      First day
+      <span id="info_firstday" class="badge bg-light text-dark">2021-05-18</span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Last day
+      <span id="info_lastday" class="badge bg-light text-dark">2021-09-21</span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Duration
+      <span id="info_duration" class="badge bg-light text-dark">127 day(s)</span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      Total
+      <span id="info_total" class="badge bg-light text-dark">198 seq(s)/pref</span>
+    </button>
+  </div>
   <!--svg width="100%" viewBox="0 0 10000 800" /-->
   <!--svg width="100%" height="800" /-->
   <svg width="7680" viewBox="0 0 7680 1000" />
