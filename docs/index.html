@@ -682,10 +682,6 @@
           <label class="form-check-label" for="haplolink">Haplolink</label>
         </div>
 
-        <div class="text-secondary form-check-inline app-align" id="resolution-hint" style="display: none;">
-          Best viewed with a screen resolution of > <span id="recommended-width">2500</span>x1400
-        </div>
-
         <div class="btn-group form-check-inline" role="group" aria-label="change-resolution">
           <div type="button" class="btn btn-outline-secondary btn-sm app-align" id="resolution-label">
             Resolution
@@ -703,6 +699,11 @@
       </form>
     </div>
   </nav>
+
+  <div class="btn btn-outline-primary text-secondary" id="resolution-hint" style="display: none; margin: 10px; text-align: center;">
+    <i class="bi-info-circle-fill info" style="color: #007bff;"></i>
+    Best viewed with a screen resolution of > <span id="recommended-width">2500</span>x1400
+  </div>
 
   <svg id="genome"/> <!-- preserveAspectRatio="xMidYMid meet"/-->
 
