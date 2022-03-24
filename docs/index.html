@@ -104,6 +104,7 @@
 
     function drawAll() {
       drawGenome();
+      selectMutations();
       drawMutations();
       drawArea();
       drawChart();
@@ -133,6 +134,20 @@
       return d3.json(data.files.mutations).then(mutations => {
         data.mutations = mutations;
       });
+    }
+
+    function selectMutations() {
+      const all = []
+      data.selected.forEach(haplotype => {
+        if (data.mutations[haplotype]) {
+          data.mutations[haplotype].forEach(mutation => {
+            all.push([mutation.str, mutation]);
+          });
+        } else {
+          console.log(`ERROR: ${haplotype} has no mutation data`);
+        }
+      });
+      data.mutations["All"] = Array.from(new Map(all).values());
     }
 
     function loadHaplotypes() {
