@@ -18,39 +18,63 @@
       // Defaults
       canvas: {width: 3840, height: 1000, magic: 5},
       margin: {top: 10, bottom: 90, left: 90, right: 10},
-      dataname: "AY.29 (n>10)",
+      dataname: "AY.29 2022-03-24 (n>10)",
 
       files: {
         /* Default data */
-        haplotypes: "ay29_over10.tsv",
+        haplotypes: "data/20220324/ay29_over10.tsv",
         /* Mutations in Haplotypes (data.mutations) */
-        mutations: "ay29_mutations.json",
-        /* Genome and Gene regions (data.genome, data.genes) */
-        regions: "ay29_regions.json",
+        mutations: "data/20220324/ay29_mutations.json",
+        /* Genome and Gene annotations (data.genome, data.genes) */
+        annotations: "data/annotations.json",
         /* JIS X 0401 prefecture codes (data.areas, data.prefectures, data.offset) */
-        districts: "ay29_districts.json"
+        districts: "data/districts.json"
       },
 
       datasets: [
         { /* All data (data.points, data.selected) */
-          name: "AY.29 (All)",
-          file: "ay29.tsv"
+          name: "AY.29 20220324 (All)",
+          file: "data/20220324/ay29.tsv"
+        },
+        { /* All data (data.points, data.selected) */
+          name: "AY.29 20220324 (wo/f.77)",
+          file: "data/20220324/ay29_wof77.tsv"
         },
         { /* Subset data (n > 10) */
-          name: "AY.29 (n>10)",
-          file: "ay29_over10.tsv"
+          name: "AY.29 20220324 (n>10)",
+          file: "data/20220324/ay29_over10.tsv"
+        },
+        { /* Subset data (n > 50) */
+          name: "AY.29 20220324 (n>50)",
+          file: "data/20220324/ay29_over50.tsv"
         },
         { /* Subset data (1.*) */
-          name: "AY.29 (1.*)",
-          file: "ay29_1.tsv"
+          name: "AY.29 20220324 (1.*)",
+          file: "data/20220324/ay29_1.tsv"
+        },
+        { /* Shizuoka (1.195.2.60) */
+          name: "AY.29 20220324 (1.195.2.*)",
+          file: "data/20220324/ay29_1.195.2.60.tsv"
+        },
+        { /* All data (data.points, data.selected) */
+          name: "AY.29 20220128 (All)",
+          file: "data/20220128/ay29.tsv"
+        },
+        { /* Subset data (n > 10) */
+          name: "AY.29 20220128 (n>10)",
+          file: "data/20220128/ay29_over10.tsv"
+        },
+        { /* Subset data (1.*) */
+          name: "AY.29 20220128 (1.*)",
+          file: "data/20220128/ay29_1.tsv"
         },
         { /* Shizuoka (1.172.1.9) */
-          name: "AY.29 (1.172.1.*)",
-          file: "ay29_1.172.1.tsv"
+          name: "AY.29 20220128 (1.172.1.*)",
+          file: "data/20220128/ay29_1.172.1.tsv"
         },
         { /* Small test data */
-          name: "AY.29 (test)",
-          file: "ay29_test.tsv"
+          name: "AY.29 20220128 (test)",
+          file: "data/20220128/ay29_test.tsv"
         }
       ],
 
@@ -124,9 +148,9 @@
     }
 
     function loadGenome() {
-      return d3.json(data.files.regions).then(regions => {
-        data.genome = regions["Genome"].shift();
-        data.genes = regions["Genes"];
+      return d3.json(data.files.annotations).then(annotations => {
+        data.genome = annotations["Genome"].shift();
+        data.genes = annotations["Genes"];
       });
     }
 
@@ -204,7 +228,7 @@
       d3.select("#recommended-width")
         .text(data.canvas.width);
       // Infobox
-      d3.select("#infobox")
+      d3.select("#infobox-haplotype")
         .style("margin-left", `${data.margin.left}px`);
       // Events
       d3.select("#haplotype")
@@ -297,8 +321,8 @@
             .append("path")
             .attr("class", "mutation")
             .attr("d", line([[x,35],[x,49]]))
-            .style("stroke", "#222")
-            .style("opacity", 0.2)
+            .style("stroke", "#333")
+            .style("opacity", 0.3)
             .style("fill", "none");
         }
         d3.select("svg#genome")
@@ -310,8 +334,8 @@
           .attr("r", data.nodeR)
           .attr("cx", d => data.scaleG(d.pos))
           .attr("cy", 30)
-          .attr("stroke", "#222")
-          .attr("opacity", 0.2);
+          .attr("stroke", "#333")
+          .attr("opacity", 0.3);
       }
     }
 
@@ -545,17 +569,17 @@
     }
 
     function showInfobox(d) {
-      d3.select("#info_haplotype")
+      d3.select("#infobox-haplotype-label")
         .text(d.haplotype);
-      d3.select("#info_prefecture")
+      d3.select("#infobox-haplotype-prefecture")
         .text(data.prefectures[d.prefecture].label);
-      d3.select("#info_firstday")
+      d3.select("#infobox-haplotype-firstday")
         .text(d3.timeFormat("%Y-%m-%d")(d.firstday));
-      d3.select("#info_lastday")
+      d3.select("#infobox-haplotype-lastday")
         .text(d3.timeFormat("%Y-%m-%d")(d.lastday));
-      d3.select("#info_duration")
+      d3.select("#infobox-haplotype-duration")
         .text(`${d.duration} day(s)`);
-      d3.select("#info_total")
+      d3.select("#infobox-haplotype-total")
         .text(`${d.total} seq(s)/pref`);
     }
 
@@ -652,16 +676,15 @@
 <body>
   <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-      <span class="navbar-brand">
-        <i class="bi-bar-chart-steps" style="font-size: 1.4rem;"></i>
-        SARS-CoV-2 HaploGraph <span class="text-secondary">ver. <span id="dataname">AY.29 (n>10)</span></span>
-      </span>
-
       <form class="d-flex">
+        <div class="navbar-brand">
+          <i class="bi-bar-chart-steps" style="font-size: 1.4rem;"></i>
+          SARS-CoV-2 HaploGraph
+        </div>
         <div class="dropdown form-check-inline">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown-dataset" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi-file-earmark-text-fill" style="font-size: 1.2rem;"></i>
-            Select dataset
+            Change dataset &nbsp;&nbsp;
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdown-dataset" style="opacity: 0.8;">
             <li>
@@ -669,11 +692,16 @@
             </li>
           </ul>
         </div>
+        <div class="navbar-brand">
+          <span class="text-secondary" id="dataname">dataname</span>
+        </div>
+      </form>
 
+      <form class="d-flex">
         <div class="dropdown form-check-inline">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-haplotype" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi-node-plus-fill" style="font-size: 1.2rem;"></i>
-            Select haplotype(s)
+            Select haplotype(s) &nbsp;&nbsp;
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdown-haplotype" style="opacity: 0.8;">
             <li>
@@ -722,30 +750,30 @@
 
   <svg id="genome"/> <!-- preserveAspectRatio="xMidYMid meet"/-->
 
-  <div id="infobox" class="btn-group" role="group" aria-label="Infobox" style="margin: 10px">
+  <div id="infobox-haplotype" class="btn-group" role="group" aria-label="Infobox haplotype" style="margin: 10px">
     <button type="button" class="btn btn-outline-secondary">
       Haplotype
-      <span id="info_haplotype" class="badge bg-light text-dark"></span>
+      <span id="infobox-haplotype-label" class="badge bg-light text-dark"></span>
     </button>
     <button type="button" class="btn btn-outline-secondary">
       Prefecture
-      <span id="info_prefecture" class="badge bg-light text-dark"></span>
+      <span id="infobox-haplotype-prefecture" class="badge bg-light text-dark"></span>
     </button>
     <button type="button" class="btn btn-outline-secondary">
       First day
-      <span id="info_firstday" class="badge bg-light text-dark"></span>
+      <span id="infobox-haplotype-firstday" class="badge bg-light text-dark"></span>
     </button>
     <button type="button" class="btn btn-outline-secondary">
       Last day
-      <span id="info_lastday" class="badge bg-light text-dark"></span>
+      <span id="infobox-haplotype-lastday" class="badge bg-light text-dark"></span>
     </button>
     <button type="button" class="btn btn-outline-secondary">
       Duration
-      <span id="info_duration" class="badge bg-light text-dark"></span>
+      <span id="infobox-haplotype-duration" class="badge bg-light text-dark"></span>
     </button>
     <button type="button" class="btn btn-outline-secondary">
       Total
-      <span id="info_total" class="badge bg-light text-dark"></span>
+      <span id="infobox-haplotype-total" class="badge bg-light text-dark"></span>
     </button>
   </div>
 
