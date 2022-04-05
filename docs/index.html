@@ -246,6 +246,7 @@
         .on("click", changeResolution);
       d3.select("#resolution-8k")
         .on("click", changeResolution);
+      // Resize
       data.windowWidth = d3.select("body").node()
         .getBoundingClientRect().width;
     }
@@ -340,10 +341,11 @@
     }
 
     function drawArea() {
+      d3.select("svg#chart").append("g").attr("class", "areas");
       for (let area of data.areas) {
         y1 = data.scaleY(data.offset - data.prefectures[area.top].code);
         y2 = data.scaleY(data.offset - data.prefectures[area.bottom].code - 1);
-        d3.select("svg#chart")
+        d3.select("svg#chart").select(".areas")
           .append("rect")
           .attr("class", "area")
           .attr("x", data.margin.left)
@@ -352,6 +354,11 @@
           .attr("height", y2 - y1)
           .attr("fill", data.pallet(area.label));
       }
+      // Brush
+      data.brushX = d3.brushX()
+        .extent([[0, 0], [data.canvas.width, data.canvas.height]])
+        .on("end", brushHaplotypes);
+      d3.select("svg#chart").select(".areas").call(data.brushX);
     }
 
     function drawChart() {
@@ -427,14 +434,15 @@
     }
 
     function wipeHaplotype() {
-      wipeSelector(".firstday");
-      wipeSelector(".lastday");
-      wipeSelector(".duration");
+      wipeSelector(".firstdays");
+      wipeSelector(".lastdays");
+      wipeSelector(".durations");
     }
 
     function drawDuration(points) {
+      d3.select("svg#chart").append("g").attr("class", "durations")
       for (let point of points) {
-        d3.select("svg#chart")
+        d3.select("svg#chart").select(".durations")
           .append("path")
           .datum(point)
           .attr("class", "duration")
@@ -457,16 +465,16 @@
 
     function changeDuration() {
       if (d3.select("#duration").property("checked")) {
-        showSelector(".duration");
-        showSelector(".lastday");
+        showSelector(".durations");
+        showSelector(".lastdays");
       } else {
-        hideSelector(".duration");
-        hideSelector(".lastday");
+        hideSelector(".durations");
+        hideSelector(".lastdays");
       }
     }
 
     function drawFirstday(points) {
-      d3.select("svg#chart")
+      d3.select("svg#chart").append("g").attr("class", "firstdays")
         .selectAll("circle.firstday")
         .data(points)
         .join("circle")
@@ -474,6 +482,7 @@
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.firstday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
+        .style("fill", d => data.pallet(d.haplotype))
         .on("click", d => toggleHaplotype(d.haplotype))
         .on("mouseover", showInfobox);
       d3.selectAll(".firstday")
@@ -481,7 +490,7 @@
     }
 
     function drawLastday(points) {
-      d3.select("svg#chart")
+      d3.select("svg#chart").append("g").attr("class", "lastdays")
         .selectAll("circle.lastday")
         .data(points)
         .join("circle")
@@ -507,13 +516,49 @@
     }
 
     function changeHaplotype() {
-      data.selected = Array.from(this.options).filter(d => d.selected).map(d => d.value);
-      if (data.selected.includes("All") || data.selected.size == 0) {
+      if (this.options) {
+        data.selected = Array.from(this.options).filter(d => d.selected).map(d => d.value);
+        if (data.selected.includes("All") || data.selected.size == 0) {
+          data.selected = Array.from(data.haplotypes);
+        }
+      } else {
         data.selected = Array.from(data.haplotypes);
       }
       drawMutations();
       drawHaplolink();
       drawHaplotype();
+    }
+
+    function brushHaplotypes() {
+      if (d3.event.selection) {
+        const [minX, maxX] = d3.event.selection;
+        const minDate = Date.parse(data.scaleX.invert(minX));
+        const maxDate = Date.parse(data.scaleX.invert(maxX));
+        const selected = data.points.filter(point => {
+          if (d3.select("#duration").property("checked")) {
+            return (
+              (point.firstday > minDate && point.firstday < maxDate) ||
+              (point.lastday  > minDate && point.lastday  < maxDate)
+            )
+          } else {
+            return (point.firstday > minDate && point.firstday < maxDate)
+          }
+        })
+        data.selected = uniqHaplotypes(selected);
+        drawMutations();
+        drawHaplolink();
+        drawHaplotype();
+      } else {
+        changeHaplotype();
+      }
+    }
+
+    function uniqHaplotypes(haplotypes) {
+      let unique = new Set();
+      for (let d of haplotypes) {
+        unique.add(d.haplotype);
+      }
+      return Array.from(unique);
     }
 
     function changeDataset() {
@@ -525,9 +570,10 @@
 
     function drawHaplolink() {
       wipeHaplolink();
+      d3.select("svg#chart").append("g").attr("class", "haplolinks")
       for (let haplotype of data.selected) {
         let haplopoints = data.points.filter(d => d.haplotype == haplotype);
-        d3.select("svg#chart")
+        d3.select("svg#chart").select(".haplolinks")
           .append("path")
           .datum(haplopoints)
           .join("path")
@@ -539,7 +585,7 @@
     }
 
     function wipeHaplolink() {
-      wipeSelector(".haplolink");
+      wipeSelector(".haplolinks");
     }
 
     function haplolink() {

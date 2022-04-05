@@ -1005,6 +1005,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.50": [
@@ -1072,6 +1078,12 @@
     }
   ],
   "1.172.1.31": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "28170",
       "ref": "C",
@@ -1263,6 +1275,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.1.4": [
@@ -1715,6 +1733,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "14408",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC14408T"
     }
   ],
   "1.368.3.1": [
@@ -3146,6 +3170,12 @@
     }
   ],
   "1.172.1.31.1|1.172.1.142.1": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "28057",
       "ref": "C",
@@ -5287,6 +5317,12 @@
       "ref": "C",
       "alt": "T",
       "str": "C6494T"
+    },
+    {
+      "pos": "28988",
+      "ref": "CAA",
+      "alt": "-",
+      "str": "CAA28988-"
     },
     {
       "pos": "26987",
@@ -8263,6 +8299,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.172.1.1.19": [
@@ -9413,6 +9455,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.21.2.3": [
@@ -9498,6 +9546,12 @@
     }
   ],
   "g.8": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "15328",
       "ref": "C",
@@ -9591,6 +9645,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
     }
   ],
   "1.2.12.5.1.1": [
@@ -10185,6 +10245,12 @@
       "ref": "TA",
       "alt": "CG",
       "str": "TA11331CG"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "e.17.3": [
@@ -10332,6 +10398,12 @@
     }
   ],
   "i.37": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "6825",
       "ref": "A",
@@ -10555,6 +10627,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "10029",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC10029T"
     }
   ],
   "1.165.1.1": [
@@ -10979,6 +11057,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.416.1.2.1": [
@@ -11133,6 +11217,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27792",
+      "ref": "TT",
+      "alt": "-",
+      "str": "TT27792-"
     }
   ],
   "1.172.1.136.4": [
@@ -11657,6 +11747,12 @@
       "ref": "TA",
       "alt": "CG",
       "str": "TA11331CG"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "h.4": [
@@ -12281,6 +12377,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27555",
+      "ref": "TGCACTGACTTGCTTTA",
+      "alt": "-",
+      "str": "TGCACTGACTTGCTTTA27555-"
     }
   ],
   "e.118.4.1": [
@@ -12331,6 +12433,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "20423",
+      "ref": "TTA",
+      "alt": "-",
+      "str": "TTA20423-"
     }
   ],
   "1.172.1.5.3": [
@@ -12580,6 +12688,12 @@
     }
   ],
   "1.172.1.31.19": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "28170",
       "ref": "C",
@@ -12859,6 +12973,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.150.1|a.1.1": [
@@ -12999,6 +13119,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.172.1.50.4": [
@@ -13795,6 +13921,12 @@
   ],
   "1.172.1.31.12": [
     {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -14305,6 +14437,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.172.1.136": [
@@ -14621,6 +14759,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28881",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG28881T"
     }
   ],
   "1.11.1.1": [
@@ -16423,6 +16567,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27266",
+      "ref": "TTA",
+      "alt": "-",
+      "str": "TTA27266-"
     }
   ],
   "1.172.1.25.8": [
@@ -17479,6 +17629,18 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27479",
+      "ref": "TACTTTTAAAAGAACCTTGCTCTTCTGGAACATACGAGGGCAATTCACCATTTCATCCTCTAGCTGATAACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTT",
+      "alt": "-",
+      "str": "TACTTTTAAAAGAACCTTGCTCTTCTGGAACATACGAGGGCAATTCACCATTTCATCCTCTAGCTGATAACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTT27479-"
+    },
+    {
+      "pos": "27638",
+      "ref": "dT",
+      "alt": "C",
+      "str": "dT27638C"
     }
   ],
   "1.172.1.21.1.16": [
@@ -18857,6 +19019,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "23604",
+      "ref": "dC",
+      "alt": "G",
+      "str": "dC23604G"
     }
   ],
   "c.61": [
@@ -19347,6 +19515,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28461",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA28461G"
     }
   ],
   "1.172.1.39.1": [
@@ -19471,6 +19645,12 @@
       "str": "A22803G"
     },
     {
+      "pos": "27822",
+      "ref": "ATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAACATGAAATTTCTTGTTTTCTTAGGAATCATCACAACTGTAGCTGCATTTCACCAAGAATGTAGTTTACAGTCATGTACTCAACATCAACCATATGTAGTTGATGACCCGTGTCCTATTCACTTCTATTCTAAATGGTATATTAGAGTAGGAGCTAGAAAATCAGCACCTTTAATTGAATTGTGCGTGGATGAGGCTGGTTCTAAATCACCCATTCAGTACATCGATATCGGTAATTATACAGTTTCCTGTTTACCTTTTACAATTAATTGCCAGGAACCTAAATTGGGTAGTCTTGTAGTGCGTTGTTCGTTCTATGAAGACTTTTTAGAGTATCATGACGTTCGTGTTGTTTTAGATTTC",
+      "alt": "-",
+      "str": "ATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAACATGAAATTTCTTGTTTTCTTAGGAATCATCACAACTGTAGCTGCATTTCACCAAGAATGTAGTTTACAGTCATGTACTCAACATCAACCATATGTAGTTGATGACCCGTGTCCTATTCACTTCTATTCTAAATGGTATATTAGAGTAGGAGCTAGAAAATCAGCACCTTTAATTGAATTGTGCGTGGATGAGGCTGGTTCTAAATCACCCATTCAGTACATCGATATCGGTAATTATACAGTTTCCTGTTTACCTTTTACAATTAATTGCCAGGAACCTAAATTGGGTAGTCTTGTAGTGCGTTGTTCGTTCTATGAAGACTTTTTAGAGTATCATGACGTTCGTGTTGTTTTAGATTTC27822-"
+    },
+    {
       "pos": "11986",
       "ref": "C",
       "alt": "A",
@@ -19511,6 +19691,18 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27874",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC27874T"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
     }
   ],
   "1.104.1.26.1": [
@@ -20111,6 +20303,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.124": [
@@ -21147,6 +21345,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "14408",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC14408T"
     }
   ],
   "d.324": [
@@ -22641,6 +22845,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.115.8.3.11": [
@@ -22673,6 +22883,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21618",
+      "ref": "dC",
+      "alt": "G",
+      "str": "dC21618G"
     }
   ],
   "1.115.8.1.2": [
@@ -22693,6 +22909,12 @@
       "ref": "G",
       "alt": "T",
       "str": "G26230T"
+    },
+    {
+      "pos": "26158",
+      "ref": "GTTA",
+      "alt": "-",
+      "str": "GTTA26158-"
     },
     {
       "pos": "26987",
@@ -22813,6 +23035,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
     }
   ],
   "1.172.1.252": [
@@ -23245,6 +23473,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "6402",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC6402T"
     }
   ],
   "f.128.3": [
@@ -23371,6 +23605,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "g.5": [
@@ -24297,6 +24537,12 @@
       "str": "A4548G"
     },
     {
+      "pos": "27579",
+      "ref": "ATT",
+      "alt": "-",
+      "str": "ATT27579-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -24517,6 +24763,12 @@
       "str": "A27899G"
     },
     {
+      "pos": "28247",
+      "ref": "AGATTTCA",
+      "alt": "-C",
+      "str": "AGATTTCA28247-C"
+    },
+    {
       "pos": "28146",
       "ref": "C",
       "alt": "T",
@@ -24533,6 +24785,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
     }
   ],
   "1.416.1.4": [
@@ -25281,6 +25539,12 @@
       "str": "C5239T"
     },
     {
+      "pos": "11083",
+      "ref": "G",
+      "alt": "-",
+      "str": "G11083-"
+    },
+    {
       "pos": "5514",
       "ref": "T",
       "alt": "C",
@@ -25887,6 +26151,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27553",
+      "ref": "TTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAG",
+      "alt": "-",
+      "str": "TTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAG27553-"
     }
   ],
   "1.172.1.104.1": [
@@ -26523,6 +26793,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.158.1.56": [
@@ -26897,6 +27173,12 @@
       "ref": "TA",
       "alt": "CG",
       "str": "TA11331CG"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "e.54": [
@@ -26979,6 +27261,12 @@
       "ref": "TA",
       "alt": "CG",
       "str": "TA11331CG"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "1.172.1.38.17.1": [
@@ -27434,6 +27722,12 @@
     }
   ],
   "1.172.1.31.19.1": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "19983",
       "ref": "C",
@@ -28807,6 +29101,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.172.1.4.2.4": [
@@ -29105,6 +29405,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.4.11": [
@@ -29227,6 +29533,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.353.1.7.3": [
@@ -29271,6 +29583,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "c.127": [
@@ -29341,6 +29659,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "14408",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC14408T"
     }
   ],
   "1.172.1.13.12": [
@@ -31411,6 +31735,12 @@
       "str": "A4548G"
     },
     {
+      "pos": "27579",
+      "ref": "ATT",
+      "alt": "-",
+      "str": "ATT27579-"
+    },
+    {
       "pos": "13095",
       "ref": "C",
       "alt": "T",
@@ -31994,6 +32324,12 @@
     }
   ],
   "1.172.1.1.6.2": [
+    {
+      "pos": "21562",
+      "ref": "A",
+      "alt": "-",
+      "str": "A21562-"
+    },
     {
       "pos": "28170",
       "ref": "C",
@@ -33313,6 +33649,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
     }
   ],
   "1.172.1.177": [
@@ -33579,6 +33921,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27555",
+      "ref": "TGCACTGACTTGCTTTA",
+      "alt": "-",
+      "str": "TGCACTGACTTGCTTTA27555-"
     }
   ],
   "1.172.1.434": [
@@ -33889,6 +34237,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28916",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG28916T"
     }
   ],
   "1.4.34": [
@@ -34721,6 +35075,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "9858",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT9858-"
     }
   ],
   "1.52.9": [
@@ -35021,6 +35381,12 @@
       "ref": "G",
       "alt": "T",
       "str": "G29279T"
+    },
+    {
+      "pos": "26494",
+      "ref": "T",
+      "alt": "-",
+      "str": "T26494-"
     },
     {
       "pos": "26497",
@@ -36449,6 +36815,12 @@
   ],
   "f.193": [
     {
+      "pos": "27571",
+      "ref": "AGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAA",
+      "alt": "-",
+      "str": "AGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAA27571-"
+    },
+    {
       "pos": "17410",
       "ref": "C",
       "alt": "T",
@@ -36483,6 +36855,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27638",
+      "ref": "dT",
+      "alt": "C",
+      "str": "dT27638C"
     }
   ],
   "1.86.1": [
@@ -37147,6 +37525,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "1.172.1.16.18": [
@@ -38613,6 +38997,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.344": [
@@ -39627,6 +40017,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.172.1.267": [
@@ -43697,6 +44093,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "f.129": [
@@ -43751,6 +44153,12 @@
   ],
   "d.64": [
     {
+      "pos": "28065",
+      "ref": "ATT",
+      "alt": "-",
+      "str": "ATT28065-"
+    },
+    {
       "pos": "1479",
       "ref": "C",
       "alt": "T",
@@ -43782,6 +44190,12 @@
     }
   ],
   "1.4.43": [
+    {
+      "pos": "518",
+      "ref": "ATG",
+      "alt": "-",
+      "str": "ATG518-"
+    },
     {
       "pos": "28087",
       "ref": "C",
@@ -43835,6 +44249,12 @@
   ],
   "b.88.1": [
     {
+      "pos": "28247",
+      "ref": "AGATTTCA",
+      "alt": "-C",
+      "str": "AGATTTCA28247-C"
+    },
+    {
       "pos": "5239",
       "ref": "C",
       "alt": "T",
@@ -43851,6 +44271,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
     }
   ],
   "1.254": [
@@ -44411,6 +44837,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "23604",
+      "ref": "dC",
+      "alt": "G",
+      "str": "dC23604G"
     }
   ],
   "h.96.2.1": [
@@ -44495,6 +44927,12 @@
       "str": "A4548G"
     },
     {
+      "pos": "27579",
+      "ref": "ATT",
+      "alt": "-",
+      "str": "ATT27579-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -44537,6 +44975,12 @@
       "ref": "A",
       "alt": "G",
       "str": "A4548G"
+    },
+    {
+      "pos": "27579",
+      "ref": "ATT",
+      "alt": "-",
+      "str": "ATT27579-"
     },
     {
       "pos": "28170",
@@ -44857,6 +45301,12 @@
       "ref": "A",
       "alt": "G",
       "str": "A7271G"
+    },
+    {
+      "pos": "27480",
+      "ref": "ACT",
+      "alt": "-TC",
+      "str": "ACT27480-TC"
     },
     {
       "pos": "11511",
@@ -46029,6 +46479,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "h.107": [
@@ -46313,6 +46769,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "26160",
+      "ref": "TAATCCAG",
+      "alt": "-",
+      "str": "TAATCCAG26160-"
     }
   ],
   "1.207": [
@@ -46817,6 +47279,12 @@
       "str": "G29279T"
     },
     {
+      "pos": "26494",
+      "ref": "T",
+      "alt": "-",
+      "str": "T26494-"
+    },
+    {
       "pos": "26497",
       "ref": "T",
       "alt": "C",
@@ -46969,6 +47437,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.115.18": [
@@ -47157,6 +47631,12 @@
       "str": "C5239T"
     },
     {
+      "pos": "27535",
+      "ref": "CCTCTAGCTGATAACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAA",
+      "alt": "-",
+      "str": "CCTCTAGCTGATAACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAA27535-"
+    },
+    {
       "pos": "17019",
       "ref": "G",
       "alt": "T",
@@ -47289,6 +47769,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
     }
   ],
   "1.172.1.208": [
@@ -47315,6 +47801,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "29402",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG29402T"
     }
   ],
   "1.172.1.11": [
@@ -47411,6 +47903,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.94": [
@@ -48165,6 +48663,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27720",
+      "ref": "TATA",
+      "alt": "-",
+      "str": "TATA27720-"
     }
   ],
   "e.348": [
@@ -48675,6 +49179,18 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
+    },
+    {
+      "pos": "28916",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG28916T"
     }
   ],
   "1.172.1.40.18": [
@@ -50097,6 +50613,12 @@
       "str": "C7194T"
     },
     {
+      "pos": "25423",
+      "ref": "GGAACTGTA",
+      "alt": "-",
+      "str": "GGAACTGTA25423-"
+    },
+    {
       "pos": "5514",
       "ref": "T",
       "alt": "C",
@@ -50309,6 +50831,12 @@
       "ref": "C",
       "alt": "T",
       "str": "C5239T"
+    },
+    {
+      "pos": "11083",
+      "ref": "G",
+      "alt": "-",
+      "str": "G11083-"
     },
     {
       "pos": "5514",
@@ -51271,6 +51799,12 @@
       "str": "C5365T"
     },
     {
+      "pos": "22289",
+      "ref": "GCTTTA",
+      "alt": "-",
+      "str": "GCTTTA22289-"
+    },
+    {
       "pos": "5514",
       "ref": "T",
       "alt": "C",
@@ -51451,6 +51985,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "f.106": [
@@ -52173,6 +52713,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.148.2.7": [
@@ -53565,6 +54111,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "14408",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC14408T"
     }
   ],
   "1.172.1.69.1.1.1.1": [
@@ -54689,6 +55241,12 @@
   ],
   "1.172.1.17.2": [
     {
+      "pos": "3951",
+      "ref": "ATA",
+      "alt": "-",
+      "str": "ATA3951-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -54720,6 +55278,12 @@
     }
   ],
   "d.121": [
+    {
+      "pos": "27548",
+      "ref": "ACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTT",
+      "alt": "-",
+      "str": "ACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTT27548-"
+    },
     {
       "pos": "12068",
       "ref": "C",
@@ -54753,6 +55317,12 @@
   ],
   "1.172.1.77.1": [
     {
+      "pos": "686",
+      "ref": "AAGTCATTT",
+      "alt": "-",
+      "str": "AAGTCATTT686-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -54784,6 +55354,12 @@
     }
   ],
   "b.61": [
+    {
+      "pos": "27606",
+      "ref": "AAAACACGTCTATCAGTTACGTGCC",
+      "alt": "-",
+      "str": "AAAACACGTCTATCAGTTACGTGCC27606-"
+    },
     {
       "pos": "12194",
       "ref": "C",
@@ -56309,6 +56885,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
     }
   ],
   "e.327": [
@@ -56357,6 +56939,12 @@
   ],
   "1.172.1.31.9": [
     {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -56389,6 +56977,12 @@
   ],
   "1.172.1.31.7": [
     {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
+    {
       "pos": "25413",
       "ref": "C",
       "alt": "T",
@@ -56420,6 +57014,12 @@
     }
   ],
   "i.46": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "15328",
       "ref": "C",
@@ -57537,6 +58137,18 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27638",
+      "ref": "TTTCACCT",
+      "alt": "-C",
+      "str": "TTTCACCT27638-C"
+    },
+    {
+      "pos": "27638",
+      "ref": "dT",
+      "alt": "C",
+      "str": "dT27638C"
     }
   ],
   "1.172.1.147.1": [
@@ -58031,6 +58643,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
     }
   ],
   "g.7": [
@@ -59037,6 +59655,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "b.75": [
@@ -59071,6 +59695,12 @@
       "ref": "A",
       "alt": "G",
       "str": "A10861G"
+    },
+    {
+      "pos": "27548",
+      "ref": "ACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTT",
+      "alt": "-",
+      "str": "ACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTT27548-"
     },
     {
       "pos": "12068",
@@ -61361,6 +61991,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "h.201": [
@@ -61417,6 +62053,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27555",
+      "ref": "TGCACTGACTTGCTTTA",
+      "alt": "-",
+      "str": "TGCACTGACTTGCTTTA27555-"
     }
   ],
   "1.172.1.174": [
@@ -61725,6 +62367,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27720",
+      "ref": "TATA",
+      "alt": "-",
+      "str": "TATA27720-"
     }
   ],
   "1.172.1.1.19.1": [
@@ -61951,6 +62599,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "e.21": [
@@ -62153,6 +62807,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.69.1.4|1.172.1.69.7.1": [
@@ -62191,6 +62851,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.69.4": [
@@ -62357,6 +63023,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
     }
   ],
   "1.4.15": [
@@ -63919,6 +64591,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "23604",
+      "ref": "dC",
+      "alt": "G",
+      "str": "dC23604G"
     }
   ],
   "1.172.1.97.5": [
@@ -64469,6 +65147,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.42.1.11.1": [
@@ -65683,6 +66367,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.330.1.9": [
@@ -65747,6 +66437,12 @@
       "ref": "C",
       "alt": "T",
       "str": "C9857T"
+    },
+    {
+      "pos": "22289",
+      "ref": "GCTTTA",
+      "alt": "-",
+      "str": "GCTTTA22289-"
     },
     {
       "pos": "5514",
@@ -66037,6 +66733,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "f.371": [
@@ -66143,6 +66845,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27720",
+      "ref": "TATA",
+      "alt": "-",
+      "str": "TATA27720-"
     }
   ],
   "f.115": [
@@ -66943,6 +67651,12 @@
       "str": "C5239T"
     },
     {
+      "pos": "27566",
+      "ref": "GCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTA",
+      "alt": "-",
+      "str": "GCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTA27566-"
+    },
+    {
       "pos": "25285",
       "ref": "T",
       "alt": "C",
@@ -67015,6 +67729,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28881",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG28881T"
     }
   ],
   "i.11.3": [
@@ -67083,6 +67803,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28881",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG28881T"
     }
   ],
   "f.11": [
@@ -67923,6 +68649,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "e.429": [
@@ -67955,6 +68687,18 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "25451",
+      "ref": "TCAAGGATGCTACTCCTTCAGATTTTG",
+      "alt": "-",
+      "str": "TCAAGGATGCTACTCCTTCAGATTTTG25451-"
+    },
+    {
+      "pos": "25469",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC25469T"
     }
   ],
   "1.11.1.26": [
@@ -68369,6 +69113,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.172.1.21.1.19": [
@@ -69537,6 +70287,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "1.2.70.3.1.1": [
@@ -69917,6 +70673,12 @@
   ],
   "n.6": [
     {
+      "pos": "27394",
+      "ref": "ATGAAAATTATTCTTTTCTTGGCACTGATAACACTCGCTACTTGTGAGCTTTATCACTACCAAGAGTGTGTTAGAGGTACAACAGTACTTTTAAAAGAACCTTGCTCTTCTGGAACATACGAGGGCAATTCACCATTTCATCCTCTAGCTGATAACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAAAGACAGAATGATTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAACATGAAATTTCTTGTTTTCTTAGGAATCATCACAACTGTAGCTGCATTTCACCAAGAATGTAGTTTACAGTCATGTACTCAACATCAACCATATGTAGTTGATGACCCGTGTCCTATTCACTTCTATTCTAAATGGTATATTAGAGTAGGAGCTAGAAAATCAGCACCTTTAATTGAATTGTGCGTGGATGAGGCTGGTTCTAAATCACCCATTCAGTACATCGATATCGGTAATTATACAGTTTCCTGTTTACCTTTTACAATTAATTGCCAGGAACCTAAATTGGGTAGTCTTGTAGTGCGTTGTTCGTTCTATGAAGACTTTTTAGAGTATCATGACGTTCGTGTTGTTTTAGATTTCATCTAAACGAACA",
+      "alt": "-",
+      "str": "ATGAAAATTATTCTTTTCTTGGCACTGATAACACTCGCTACTTGTGAGCTTTATCACTACCAAGAGTGTGTTAGAGGTACAACAGTACTTTTAAAAGAACCTTGCTCTTCTGGAACATACGAGGGCAATTCACCATTTCATCCTCTAGCTGATAACAAATTTGCACTGACTTGCTTTAGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAAAGACAGAATGATTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAACATGAAATTTCTTGTTTTCTTAGGAATCATCACAACTGTAGCTGCATTTCACCAAGAATGTAGTTTACAGTCATGTACTCAACATCAACCATATGTAGTTGATGACCCGTGTCCTATTCACTTCTATTCTAAATGGTATATTAGAGTAGGAGCTAGAAAATCAGCACCTTTAATTGAATTGTGCGTGGATGAGGCTGGTTCTAAATCACCCATTCAGTACATCGATATCGGTAATTATACAGTTTCCTGTTTACCTTTTACAATTAATTGCCAGGAACCTAAATTGGGTAGTCTTGTAGTGCGTTGTTCGTTCTATGAAGACTTTTTAGAGTATCATGACGTTCGTGTTGTTTTAGATTTCATCTAAACGAACA27394-"
+    },
+    {
       "pos": "1059",
       "ref": "C",
       "alt": "T",
@@ -69975,9 +70737,45 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28271",
+      "ref": "dA",
+      "alt": "-",
+      "str": "dA28271-"
+    },
+    {
+      "pos": "27752",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC27752T"
+    },
+    {
+      "pos": "27874",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC27874T"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
+    },
+    {
+      "pos": "27638",
+      "ref": "dT",
+      "alt": "C",
+      "str": "dT27638C"
     }
   ],
   "f.193.1": [
+    {
+      "pos": "27571",
+      "ref": "AGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAA",
+      "alt": "-",
+      "str": "AGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAA27571-"
+    },
     {
       "pos": "17410",
       "ref": "C",
@@ -70019,9 +70817,21 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27638",
+      "ref": "dT",
+      "alt": "C",
+      "str": "dT27638C"
     }
   ],
   "f.193.1.1": [
+    {
+      "pos": "27571",
+      "ref": "AGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAA",
+      "alt": "-",
+      "str": "AGCACTCAATTTGCTTTTGCTTGTCCTGACGGCGTAAAACACGTCTATCAGTTACGTGCCAGATCAGTTTCACCTAAACTGTTCATCAGACAAGAGGAAGTTCAAGAACTTTACTCTCCAATTTTTCTTATTGTTGCGGCAATAGTGTTTATAACACTTTGCTTCACACTCAAAAGAA27571-"
+    },
     {
       "pos": "17410",
       "ref": "C",
@@ -70069,9 +70879,21 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27638",
+      "ref": "dT",
+      "alt": "C",
+      "str": "dT27638C"
     }
   ],
   "k.26": [
+    {
+      "pos": "686",
+      "ref": "AAGTCATTT",
+      "alt": "-",
+      "str": "AAGTCATTT686-"
+    },
     {
       "pos": "21614",
       "ref": "C",
@@ -70307,6 +71129,12 @@
       "ref": "TA",
       "alt": "CG",
       "str": "TA11331CG"
+    },
+    {
+      "pos": "11332",
+      "ref": "dA",
+      "alt": "G",
+      "str": "dA11332G"
     }
   ],
   "1.172.1.9.2": [
@@ -71089,6 +71917,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "e.19.15": [
@@ -71201,6 +72035,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T9148C"
+    },
+    {
+      "pos": "25469",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC25469T"
     }
   ],
   "e.19.21": [
@@ -71505,6 +72345,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "e.19.3.7": [
@@ -72155,6 +73001,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "16466",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC16466T"
     }
   ],
   "1.7.5": [
@@ -72829,6 +73681,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "23604",
+      "ref": "dC",
+      "alt": "G",
+      "str": "dC23604G"
     }
   ],
   "1.11.25.1": [
@@ -72961,6 +73819,12 @@
   ],
   "1.172.1.31.9.1": [
     {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -72999,6 +73863,12 @@
   ],
   "1.172.1.31.16": [
     {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
+    {
       "pos": "28170",
       "ref": "C",
       "alt": "T",
@@ -73030,6 +73900,12 @@
     }
   ],
   "1.172.1.31.7.1": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "25413",
       "ref": "C",
@@ -73069,6 +73945,12 @@
   ],
   "e.12": [
     {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
+    {
       "pos": "8699",
       "ref": "A",
       "alt": "G",
@@ -73106,6 +73988,12 @@
     }
   ],
   "f.123": [
+    {
+      "pos": "26161",
+      "ref": "A",
+      "alt": "-",
+      "str": "A26161-"
+    },
     {
       "pos": "3111",
       "ref": "A",
@@ -73173,6 +74061,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.416.1.5": [
@@ -74641,6 +75535,12 @@
       "str": "A22803G"
     },
     {
+      "pos": "27822",
+      "ref": "ATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAACATGAAATTTCTTGTTTTCTTAGGAATCATCACAACTGTAGCTGCATTTCACCAAGAATGTAGTTTACAGTCATGTACTCAACATCAACCATATGTAGTTGATGACCCGTGTCCTATTCACTTCTATTCTAAATGGTATATTAGAGTAGGAGCTAGAAAATCAGCACCTTTAATTGAATTGTGCGTGGATGAGGCTGGTTCTAAATCACCCATTCAGTACATCGATATCGGTAATTATACAGTTTCCTGTTTACCTTTTACAATTAATTGCCAGGAACCTAAATTGGGTAGTCTTGTAGTGCGTTGTTCGTTCTATGAAGACTTTTTAGAGTATCATGACGTTCGTGTTGTTTTAGATTTC",
+      "alt": "-",
+      "str": "ATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAACATGAAATTTCTTGTTTTCTTAGGAATCATCACAACTGTAGCTGCATTTCACCAAGAATGTAGTTTACAGTCATGTACTCAACATCAACCATATGTAGTTGATGACCCGTGTCCTATTCACTTCTATTCTAAATGGTATATTAGAGTAGGAGCTAGAAAATCAGCACCTTTAATTGAATTGTGCGTGGATGAGGCTGGTTCTAAATCACCCATTCAGTACATCGATATCGGTAATTATACAGTTTCCTGTTTACCTTTTACAATTAATTGCCAGGAACCTAAATTGGGTAGTCTTGTAGTGCGTTGTTCGTTCTATGAAGACTTTTTAGAGTATCATGACGTTCGTGTTGTTTTAGATTTC27822-"
+    },
+    {
       "pos": "11986",
       "ref": "C",
       "alt": "A",
@@ -74687,6 +75587,18 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "27874",
+      "ref": "dC",
+      "alt": "T",
+      "str": "dC27874T"
+    },
+    {
+      "pos": "28248",
+      "ref": "dGATTTC",
+      "alt": "-",
+      "str": "dGATTTC28248-"
     }
   ],
   "g.22": [
@@ -75507,6 +76419,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "22189",
+      "ref": "TAT",
+      "alt": "-",
+      "str": "TAT22189-"
     }
   ],
   "f.248": [
@@ -75843,6 +76761,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "28916",
+      "ref": "dG",
+      "alt": "T",
+      "str": "dG28916T"
     }
   ],
   "d.173.5": [
@@ -76781,6 +77705,12 @@
       "ref": "T",
       "alt": "C",
       "str": "T5514C"
+    },
+    {
+      "pos": "21987",
+      "ref": "dG",
+      "alt": "A",
+      "str": "dG21987A"
     }
   ],
   "1.115.8.5.3.7.1": [
