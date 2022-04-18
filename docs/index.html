@@ -494,9 +494,9 @@
         .join("rect")
         .attr("class", "region")
         .attr("x", d => data.scaleG(d.lower))
-        .attr("y", 50)
+        .attr("y", d => d.region != "" ? 50 : 55)
         .attr("width", d => data.scaleG(d.upper) - data.scaleG(d.lower))
-        .attr("height", 10)
+        .attr("height", d => d.region != "" ? 10 : 1)
         .attr("stroke", "black")
         .attr("fill", d => data.pallet(d.region));
       d3.select("svg#genome")
@@ -516,18 +516,42 @@
     function drawMutations() {
       wipeMutations();
       const line = d3.line();
+
+      // Wuhan-Hu-1 -> AY.29
+      d3.select("svg#genome")
+        .append("g")
+        .selectAll("path.mutation")
+        .data(data.mutations["Reference"])
+        .join("path")
+        .attr("class", "reference-mutation")
+        .attr("d", d => line([[data.scaleG(d.pos),45],[data.scaleG(d.pos),49]]))
+        .style("stroke", "#333")
+        .style("opacity", 0.3)
+        .style("fill", "none");
+      d3.select("svg#genome")
+        .append("g")
+        .selectAll("circle.mutation")
+        .data(data.mutations["Reference"])
+        .join("circle")
+        .attr("class", "reference-mutation")
+        .attr("r", data.nodeR)
+        .attr("cx", d => data.scaleG(d.pos))
+        .attr("cy", 40)
+        .style("stroke", "#333")
+        .style("fill", "#333")
+        .style("opacity", 0.3);
+
       for (let haplotype of data.haplotypes.visible) {
-        for (let mutation of data.mutations[haplotype]) {
-          let x = data.scaleG(mutation.pos)
-          d3.select("svg#genome")
-            .append("g")
-            .append("path")
-            .attr("class", "mutation")
-            .attr("d", line([[x,35],[x,49]]))
-            .style("stroke", "#333")
-            .style("opacity", 0.3)
-            .style("fill", "none");
-        }
+        d3.select("svg#genome")
+          .append("g")
+          .selectAll("path.mutation")
+          .data(data.mutations[haplotype])
+          .join("path")
+          .attr("class", "mutation")
+          .attr("d", d => line([[data.scaleG(d.pos),30],[data.scaleG(d.pos),49]]))
+          .style("stroke", "#333")
+          .style("fill", "none")
+          .style("opacity", 0.3);
         d3.select("svg#genome")
           .append("g")
           .selectAll("circle.mutation")
@@ -536,14 +560,16 @@
           .attr("class", "mutation")
           .attr("r", data.nodeR)
           .attr("cx", d => data.scaleG(d.pos))
-          .attr("cy", 30)
-          .attr("stroke", "#333")
-          .attr("opacity", 0.3);
+          .attr("cy", 25)
+          .style("stroke", "#333")
+          .style("fill", "#333")
+          .style("opacity", 0.3);
       }
     }
 
     function wipeMutations() {
       wipeSelector(".mutation");
+      wipeSelector(".reference-mutation");
     }
 
     function drawHaplotype() {

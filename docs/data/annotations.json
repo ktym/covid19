@@ -8,6 +8,11 @@
   ],
   "Genes": [
     {
+      "region": "",
+      "lower": 1,
+      "upper": 265
+    },
+    {
       "region": "nsp1",
       "lower": 266,
       "upper": 805
@@ -171,6 +176,11 @@
       "region": "ORF10",
       "lower": 29558,
       "upper": 29674
+    },
+    {
+      "region": "",
+      "lower": 29675,
+      "upper": 29903
     }
   ]
 }
