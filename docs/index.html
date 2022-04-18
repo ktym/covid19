@@ -36,10 +36,6 @@
           name: "AY.29 20220324 (All)",
           file: "data/20220324/ay29.tsv"
         },
-        { /* All data (excluding suspicious f.77) */
-          name: "AY.29 20220324 (w/o f.77)",
-          file: "data/20220324/ay29_wof77.tsv"
-        },
         { /* Subset data (n > 10) */
           name: "AY.29 20220324 (n>10)",
           file: "data/20220324/ay29_over10.tsv"
@@ -441,7 +437,7 @@
         .tickSize(5);
       d3.select("svg#genome")
         .attr("width", genomeWidth)
-        .attr("viewBox", `0 0 ${genomeWidth} 100`);
+        .attr("viewBox", `0 0 ${genomeWidth + data.margin.right} 100`);
       d3.select("svg#genome")
         .append("g")
         .attr("class", "axis-g")
