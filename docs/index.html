@@ -19,38 +19,63 @@
       canvas: {width: 3840, height: 1000, magic: 5},
       margin: {top: 10, bottom: 90, left: 90, right: 10},
       dataname: "AY.29 2022-03-24 (n>10)",
-
       files: {
-        /* Default data */
+        /* Default haplotypes data (data.haplotypes.all) */
         haplotypes: "data/20220324/ay29_over10.tsv",
-        /* Mutations in Haplotypes (data.mutations) */
+        /* Default mutations in haplotypes (data.mutations) */
         mutations: "data/20220324/ay29_mutations.json",
-        /* Genome and Gene annotations (data.genome, data.genes) */
+        /* Genome and gene annotations (data.genome, data.genes) */
         annotations: "data/annotations.json",
         /* JIS X 0401 prefecture codes (data.areas, data.prefectures, data.offset) */
         districts: "data/districts.json"
       },
 
+      // Options
       datasets: [
         { /* All data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
-          name: "AY.29 20220324 (All)",
-          file: "data/20220324/ay29.tsv"
+          dataname: "AY.29 20220324 (All)",
+          haplotypes: "data/20220324/ay29.tsv",
+          mutations: "data/20220324/ay29_mutations.json"
         },
         { /* Subset data (n > 10) */
-          name: "AY.29 20220324 (n>10)",
-          file: "data/20220324/ay29_over10.tsv"
+          dataname: "AY.29 20220324 (n>10)",
+          haplotypes: "data/20220324/ay29_over10.tsv",
+          mutations: "data/20220324/ay29_mutations.json"
         },
         { /* Subset data (n > 50) */
-          name: "AY.29 20220324 (n>50)",
-          file: "data/20220324/ay29_over50.tsv"
+          dataname: "AY.29 20220324 (n>50)",
+          haplotypes: "data/20220324/ay29_over50.tsv",
+          mutations: "data/20220324/ay29_mutations.json"
         },
         { /* Subset data (1.*) */
-          name: "AY.29 20220324 (1.*)",
-          file: "data/20220324/ay29_1.tsv"
+          dataname: "AY.29 20220324 (1.*)",
+          haplotypes: "data/20220324/ay29_1.tsv",
+          mutations: "data/20220324/ay29_mutations.json"
         },
         { /* Shizuoka (1.195.2.60) */
-          name: "AY.29 20220324 (1.195.2.*)",
-          file: "data/20220324/ay29_1.195.2.60.tsv"
+          dataname: "AY.29 20220324 (1.195.2.*)",
+          haplotypes: "data/20220324/ay29_1.195.2.60.tsv",
+          mutations: "data/20220324/ay29_mutations.json"
+        },
+        { /* All data (data.points) */
+          dataname: "AY.29 20220128 (All)",
+          haplotypes: "data/20220128/ay29.tsv",
+          mutations: "data/20220128/ay29_mutations.json"
+        },
+        { /* Subset data (n > 10) */
+          dataname: "AY.29 20220128 (n>10)",
+          haplotypes: "data/20220128/ay29_over10.tsv",
+          mutations: "data/20220128/ay29_mutations.json"
+        },
+        { /* Subset data (1.*) */
+          dataname: "AY.29 20220128 (1.*)",
+          haplotypes: "data/20220128/ay29_1.tsv",
+          mutations: "data/20220128/ay29_mutations.json"
+        },
+        { /* Shizuoka (1.172.1.9) */
+          dataname: "AY.29 20220128 (1.172.1.*)",
+          haplotypes: "data/20220128/ay29_1.172.1.tsv",
+          mutations: "data/20220128/ay29_mutations.json"
         }
       ],
 
@@ -152,7 +177,7 @@
             return (
               (point.firstday > minDate && point.firstday < maxDate) ||
               (point.lastday  > minDate && point.lastday  < maxDate)
-            )
+            );
           } else {
             return (point.firstday > minDate && point.firstday < maxDate)
           }
@@ -163,9 +188,44 @@
         });
         data.haplotypes.visible = uniqHaplotypes(brushed);
       } else {
-        data.haplotypes.visible = data.haplotypes.selected
+        data.haplotypes.visible = data.haplotypes.selected;
       }
       updateAll();
+    }
+
+    function pickPrefecture(d) {
+      wipePrefecture();
+      const prefecture = Object.values(data.prefectures).filter(pref => pref.code == data.offset - d).shift();
+      const picked = data.points.filter(point => {
+        return point.prefecture == prefecture.name
+      }).filter(point => {
+        if (data.haplotypes.selected.includes(point.haplotype)) {
+          return point;
+        }
+      })
+      data.haplotypes.visible = uniqHaplotypes(picked);
+      showPrefecture(prefecture);
+      updateAll();
+    }
+
+    function showPrefecture(prefecture) {
+      const onerow = data.scaleY(2) - data.scaleY(1);
+      const y1 = data.scaleY(data.offset - prefecture.code);
+      const y2 = data.scaleY(data.offset - prefecture.code - 1);
+      d3.select("svg#chart").append("g").attr("class", "prefectures");
+      d3.select("svg#chart").select(".prefectures")
+        .append("rect")
+        .attr("class", "prefecture")
+        .attr("x", data.margin.left)
+        .attr("y", y1 + onerow / 2 + 3)
+        .attr("width", data.canvas.width - (data.margin.left + data.margin.right))
+        .attr("height", y2 - y1 - 6)
+        .style("fill", "#999")
+        .style("opacity", 0.3);
+    }
+
+    function wipePrefecture() {
+      wipeSelector(".prefectures")
     }
 
     function allMutations() {
@@ -218,8 +278,11 @@
     }
 
     function changeDataset() {
-      data.files.haplotypes = Array.from(this.options).filter(d => d.selected).map(d => d.value).shift();
-      data.dataname = data.datasets.filter(d => d.file == data.files.haplotypes).map(d => d.name).shift();
+      const selected = Array.from(this.options).filter(d => d.selected);
+      data.dataname = selected.map(d => d.value).shift();
+      const dataset = data.datasets.filter(d => d.dataname == data.dataname);
+      data.files.haplotypes = dataset.map(d => d.haplotypes).shift();
+      data.files.mutations = dataset.map(d => d.mutations).shift();
       data.haplotypes.all = new Set();
       setup();
     }
@@ -286,8 +349,8 @@
         .selectAll("option")
         .data(data.datasets)
         .join("option")
-        .attr("value", d => d.file)
-        .text(d => d.name)
+        .attr("value", d => d.dataname)
+        .text(d => d.dataname)
       // SVG canvas
       d3.select("svg#genome")
         .attr("width", data.canvas.width)
@@ -372,7 +435,8 @@
         .append("g")
         .attr("class", "axis-y")
         .attr("transform", `translate(${[data.margin.left, 0]})`)
-        .call(axisY);
+        .call(axisY)
+        .selectAll("text").on("click", pickPrefecture);
       // Y axis grid
       d3.select("svg#chart")
         .append("g")
@@ -386,8 +450,8 @@
       const onerow = data.scaleY(2) - data.scaleY(1);
       d3.select("svg#chart").append("g").attr("class", "areas");
       for (let area of data.areas) {
-        y1 = data.scaleY(data.offset - data.prefectures[area.top].code);
-        y2 = data.scaleY(data.offset - data.prefectures[area.bottom].code - 1);
+        let y1 = data.scaleY(data.offset - data.prefectures[area.top].code);
+        let y2 = data.scaleY(data.offset - data.prefectures[area.bottom].code - 1);
         d3.select("svg#chart").select(".areas")
           .append("rect")
           .attr("class", "area")
@@ -399,7 +463,7 @@
       }
       // Brush
       data.brushX = d3.brushX()
-        .extent([[0, 0], [data.canvas.width, data.canvas.height]])
+        .extent([[data.margin.left, 0], [data.canvas.width, data.canvas.height]])
         .on("end", brushHaplotypes);
       d3.select("svg#chart").select(".areas").call(data.brushX);
     }
