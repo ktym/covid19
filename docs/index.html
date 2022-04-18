@@ -32,9 +32,13 @@
       },
 
       datasets: [
-        { /* All data (data.points, data.selected) */
+        { /* All data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
           name: "AY.29 20220324 (All)",
           file: "data/20220324/ay29.tsv"
+        },
+        { /* All data (excluding suspicious f.77) */
+          name: "AY.29 20220324 (w/o f.77)",
+          file: "data/20220324/ay29_wof77.tsv"
         },
         { /* Subset data (n > 10) */
           name: "AY.29 20220324 (n>10)",
@@ -52,7 +56,7 @@
           name: "AY.29 20220324 (1.195.2.*)",
           file: "data/20220324/ay29_1.195.2.60.tsv"
         },
-        { /* All data (data.points, data.selected) */
+        { /* All data (data.points) */
           name: "AY.29 20220128 (All)",
           file: "data/20220128/ay29.tsv"
         },
@@ -92,7 +96,11 @@
       pallet: d3.scaleOrdinal(d3.schemeTableau10),
       nodeR: 5,
       edgeW: 2,
-      haplotypes: new Set()
+      haplotypes: {
+        all: new Set(),
+        selected: [],
+        visible: []
+      }
     };
 
     /*
@@ -106,8 +114,6 @@
         .range([data.margin.left, data.canvas.width - data.margin.right]);
       data.scaleY = d3.scaleLinear()
         .range([data.canvas.height - data.margin.bottom, data.margin.top]);
-      // Used in loadHaplotypes()
-      data.oneday = Date.parse("2022-03-10") - Date.parse("2022-03-09");
 
       Promise.all([
         loadDistricts(),
@@ -115,24 +121,131 @@
         loadMutations(),
         loadHaplotypes()
       ]).then(() => {
-        // Depends on loadHaplotypes()
-        data.onerow = data.scaleY(2) - data.scaleY(1);
+        initHaplotypes();
         prepareHTML();
-        drawAll();
+        drawAxes();
+        drawArea();
+        updateAll();
       });
     }
 
-    function drawAll() {
+    function initHaplotypes() {
+      data.haplotypes.visible = Array.from(data.haplotypes.all);
+    }
+
+    function updateAll() {
+      updateGenome();
+      updateChart();
+    }
+
+    function updateGenome() {
       drawGenome();
-      selectMutations();
       drawMutations();
-      drawArea();
-      drawChart();
+    }
+
+    function updateChart() {
+      drawHaplolink();
+      drawHaplotype();
     }
 
     function wipeAll() {
       d3.select("svg#genome").selectAll("*").remove()
       d3.select("svg#chart").selectAll("*").remove()
+    }
+
+    function changeHaplotypes() {
+      if (this.options) {
+        data.haplotypes.selected = Array.from(this.options).filter(d => d.selected).map(d => d.value);
+        if (data.haplotypes.selected.includes("All") || data.haplotypes.selected.size == 0) {
+          data.haplotypes.selected = Array.from(data.haplotypes.all);
+        }
+      } else {
+        data.haplotypes.selected = Array.from(data.haplotypes.all);
+      }
+      data.haplotypes.visible = data.haplotypes.selected;
+      updateAll();
+    }
+
+    function brushHaplotypes() {
+      if (d3.event.selection) {
+        const [minX, maxX] = d3.event.selection;
+        const minDate = Date.parse(data.scaleX.invert(minX));
+        const maxDate = Date.parse(data.scaleX.invert(maxX));
+        const brushed = data.points.filter(point => {
+          if (d3.select("#duration").property("checked")) {
+            return (
+              (point.firstday > minDate && point.firstday < maxDate) ||
+              (point.lastday  > minDate && point.lastday  < maxDate)
+            )
+          } else {
+            return (point.firstday > minDate && point.firstday < maxDate)
+          }
+        }).filter(point => {
+          if (data.haplotypes.selected.includes(point.haplotype)) {
+            return point;
+          }
+        });
+        data.haplotypes.visible = uniqHaplotypes(brushed);
+      } else {
+        data.haplotypes.visible = data.haplotypes.selected
+      }
+      updateAll();
+    }
+
+    function allMutations() {
+      const all = new Map()
+      data.haplotypes.all.forEach(haplotype => {
+        if (data.mutations[haplotype]) {
+          data.mutations[haplotype].forEach(mutation => {
+            all.set(mutation.str, mutation);
+          });
+        } else {
+          console.log(`ERROR: ${haplotype} has no mutation data`);
+        }
+      });
+      data.mutations["All"] = Array.from(all.values());
+    }
+
+    function uniqHaplotypes(haplotypes) {
+      let unique = new Set();
+      for (let d of haplotypes) {
+        unique.add(d.haplotype);
+      }
+      return Array.from(unique);
+    }
+
+    function toggleHaplotype(haplotype) {
+      if (data.haplotypes.selected[0] == haplotype && ! data.haplotypes.selected[1]) {
+        data.haplotypes.visible = data.haplotypes.selected
+      } else {
+        data.haplotypes.visible = [ haplotype ];
+      }
+      updateAll();
+    }
+
+    function toggleDuration() {
+      if (d3.select("#duration").property("checked")) {
+        showSelector(".durations");
+        showSelector(".lastdays");
+      } else {
+        hideSelector(".durations");
+        hideSelector(".lastdays");
+      }
+    }
+
+    function toggleHaplolink() {
+      if (d3.select("#haplolink").property("checked")) {
+        drawHaplolink();
+      } else {
+        wipeHaplolink();
+      }
+    }
+
+    function changeDataset() {
+      data.files.haplotypes = Array.from(this.options).filter(d => d.selected).map(d => d.value).shift();
+      data.dataname = data.datasets.filter(d => d.file == data.files.haplotypes).map(d => d.name).shift();
+      data.haplotypes.all = new Set();
+      setup();
     }
 
     function loadDistricts() {
@@ -156,23 +269,10 @@
       });
     }
 
-    function selectMutations() {
-      const all = []
-      data.selected.forEach(haplotype => {
-        if (data.mutations[haplotype]) {
-          data.mutations[haplotype].forEach(mutation => {
-            all.push([mutation.str, mutation]);
-          });
-        } else {
-          console.log(`ERROR: ${haplotype} has no mutation data`);
-        }
-      });
-      data.mutations["All"] = Array.from(new Map(all).values());
-    }
-
     function loadHaplotypes() {
+      const oneday = Date.parse("2022-03-10") - Date.parse("2022-03-09");
       return d3.tsv(data.files.haplotypes, row => {
-        data.haplotypes.add(row.haplotype);
+        data.haplotypes.all.add(row.haplotype);
         return {
           haplotype: row.haplotype,
           firstday: Date.parse(row.first),
@@ -182,11 +282,12 @@
           prefecture: row.prefecture
         }
       }).then(dataset => {
-        data.selected = Array.from(data.haplotypes);
+        data.haplotypes.selected = Array.from(data.haplotypes.all);
+        data.haplotypes.visible = Array.from(data.haplotypes.all);
         data.points = dataset;
         data.scaleX.domain([
-          d3.min(dataset, d => d.firstday) - data.oneday,
-          d3.max(dataset, d => d.lastday) + data.oneday
+          d3.min(dataset, d => d.firstday) - oneday,
+          d3.max(dataset, d => d.lastday) + oneday
         ]);
         data.scaleY.domain(
           d3.extent(dataset, d => data.prefectures[d.prefecture].code)
@@ -196,7 +297,7 @@
 
     function prepareHTML() {
       // Haplotype menu
-      let options = Array.from(data.haplotypes);
+      let options = Array.from(data.haplotypes.all);
       options.unshift("All");
       d3.select("#haplotype")
         .selectAll("option")
@@ -228,15 +329,15 @@
         .style("margin-left", `${data.margin.left}px`);
       // Events
       d3.select("#haplotype")
-        .on("change", changeHaplotype);
+        .on("change", changeHaplotypes);
       d3.select("#dataset")
         .on("change", changeDataset);
       d3.select("#duration")
-        .on("change", changeDuration);
+        .on("change", toggleDuration);
       d3.select("#haplolink")
-        .on("change", changeHaplolink);
+        .on("change", toggleHaplolink);
       d3.select(window)
-        .on("resize", scaleGenome);
+        .on("resize", updateGenome);
       d3.select("#resolution-label")
         .on("mouseenter", showResolutionHint)
         .on("mouseleave", hideResolutionHint);
@@ -246,125 +347,6 @@
         .on("click", changeResolution);
       d3.select("#resolution-8k")
         .on("click", changeResolution);
-      // Resize
-      data.windowWidth = d3.select("body").node()
-        .getBoundingClientRect().width;
-    }
-
-    function drawGenome() {
-      let genomeWidth = data.windowWidth - data.margin.left - data.margin.right;
-      data.scaleG = d3.scaleLinear()
-        //.range([data.margin.left, data.canvas.width - data.margin.right])
-        .range([data.margin.left, genomeWidth])
-        .domain([data.genome.lower, data.genome.upper]);
-      const axisG = d3.axisBottom(data.scaleG)
-        .ticks(25)
-        .tickSize(5);
-      d3.select("svg#genome")
-        .attr("width", genomeWidth)
-        .attr("viewBox", `0 0 ${genomeWidth} 100`);
-      d3.select("svg#genome")
-        .append("g")
-        .attr("class", "axis-g")
-        .call(axisG)
-        .attr("transform", `translate(0, 80)`);
-      d3.select("svg#genome")
-        .append("g")
-        .selectAll("rect.region")
-        .data(data.genes)
-        .join("rect")
-        .attr("class", "region")
-        .attr("x", d => data.scaleG(d.lower))
-        .attr("y", 50)
-        .attr("width", d => data.scaleG(d.upper) - data.scaleG(d.lower))
-        .attr("height", 10)
-        .attr("stroke", "black")
-        .attr("fill", d => data.pallet(d.region));
-      d3.select("svg#genome")
-        .selectAll("text.region")
-        .data(data.genes)
-        .join("text")
-        .text(d => d.region)
-        .attr("x", d => data.scaleG(d.lower))
-        .attr("y", 75)
-    }
-
-    function wipeGenome() {
-      d3.select("svg#genome").selectAll("g").remove();
-      d3.select("svg#genome").selectAll("text").remove();
-    }
-
-    function scaleGenome() {
-      data.windowWidth = d3.select("body").node().getBoundingClientRect().width;
-      //console.log(`rescaled to ${data.windowWidth}`)
-      wipeGenome();
-      drawGenome();
-      drawMutations();
-    }
-
-    function drawMutations() {
-      wipeMutations();
-      if (data.selected.includes("All") || data.selected.size == 0 || data.selected.length == Array.from(data.haplotypes).length) {
-        haplotypes = [ "All" ];
-      } else {
-        haplotypes = data.selected;
-      }
-      const line = d3.line();
-      for (let haplotype of haplotypes) {
-        for (let mutation of data.mutations[haplotype]) {
-          let x = data.scaleG(mutation.pos)
-          d3.select("svg#genome")
-            .append("g")
-            .append("path")
-            .attr("class", "mutation")
-            .attr("d", line([[x,35],[x,49]]))
-            .style("stroke", "#333")
-            .style("opacity", 0.3)
-            .style("fill", "none");
-        }
-        d3.select("svg#genome")
-          .append("g")
-          .selectAll("circle.mutation")
-          .data(data.mutations[haplotype])
-          .join("circle")
-          .attr("class", "mutation")
-          .attr("r", data.nodeR)
-          .attr("cx", d => data.scaleG(d.pos))
-          .attr("cy", 30)
-          .attr("stroke", "#333")
-          .attr("opacity", 0.3);
-      }
-    }
-
-    function wipeMutations() {
-      wipeSelector(".mutation");
-    }
-
-    function drawArea() {
-      d3.select("svg#chart").append("g").attr("class", "areas");
-      for (let area of data.areas) {
-        y1 = data.scaleY(data.offset - data.prefectures[area.top].code);
-        y2 = data.scaleY(data.offset - data.prefectures[area.bottom].code - 1);
-        d3.select("svg#chart").select(".areas")
-          .append("rect")
-          .attr("class", "area")
-          .attr("x", data.margin.left)
-          .attr("y", y1 + data.onerow / 2)
-          .attr("width", data.canvas.width - (data.margin.left + data.margin.right))
-          .attr("height", y2 - y1)
-          .attr("fill", data.pallet(area.label));
-      }
-      // Brush
-      data.brushX = d3.brushX()
-        .extent([[0, 0], [data.canvas.width, data.canvas.height]])
-        .on("end", brushHaplotypes);
-      d3.select("svg#chart").select(".areas").call(data.brushX);
-    }
-
-    function drawChart() {
-      drawAxes();
-      drawHaplolink();
-      drawHaplotype();
     }
 
     function drawAxes() {
@@ -383,7 +365,7 @@
           for (let prefecture in data.prefectures) {
             if (data.prefectures[prefecture].code == data.offset - d) {
               return data.prefectures[prefecture].label
-            }
+             }
           }
         });
       const axisYgrid = d3.axisLeft(data.scaleY)
@@ -424,13 +406,113 @@
         .selectAll("text").remove();
     }
 
+    function drawArea() {
+      const onerow = data.scaleY(2) - data.scaleY(1);
+      d3.select("svg#chart").append("g").attr("class", "areas");
+      for (let area of data.areas) {
+        y1 = data.scaleY(data.offset - data.prefectures[area.top].code);
+        y2 = data.scaleY(data.offset - data.prefectures[area.bottom].code - 1);
+        d3.select("svg#chart").select(".areas")
+          .append("rect")
+          .attr("class", "area")
+          .attr("x", data.margin.left)
+          .attr("y", y1 + onerow / 2)
+          .attr("width", data.canvas.width - (data.margin.left + data.margin.right))
+          .attr("height", y2 - y1)
+          .attr("fill", data.pallet(area.label));
+      }
+      // Brush
+      data.brushX = d3.brushX()
+        .extent([[0, 0], [data.canvas.width, data.canvas.height]])
+        .on("end", brushHaplotypes);
+      d3.select("svg#chart").select(".areas").call(data.brushX);
+    }
+
+    function drawGenome() {
+      wipeGenome();
+      // Resize
+      const windowWidth = d3.select("body").node().getBoundingClientRect().width;
+      const genomeWidth = windowWidth - data.margin.left - data.margin.right;
+      data.scaleG = d3.scaleLinear()
+        .range([data.margin.left, genomeWidth])
+        .domain([data.genome.lower, data.genome.upper]);
+      const axisG = d3.axisBottom(data.scaleG)
+        .ticks(25)
+        .tickSize(5);
+      d3.select("svg#genome")
+        .attr("width", genomeWidth)
+        .attr("viewBox", `0 0 ${genomeWidth} 100`);
+      d3.select("svg#genome")
+        .append("g")
+        .attr("class", "axis-g")
+        .call(axisG)
+        .attr("transform", `translate(0, 80)`);
+      d3.select("svg#genome")
+        .append("g")
+        .selectAll("rect.region")
+        .data(data.genes)
+        .join("rect")
+        .attr("class", "region")
+        .attr("x", d => data.scaleG(d.lower))
+        .attr("y", 50)
+        .attr("width", d => data.scaleG(d.upper) - data.scaleG(d.lower))
+        .attr("height", 10)
+        .attr("stroke", "black")
+        .attr("fill", d => data.pallet(d.region));
+      d3.select("svg#genome")
+        .selectAll("text.region")
+        .data(data.genes)
+        .join("text")
+        .text(d => d.region)
+        .attr("x", d => data.scaleG(d.lower))
+        .attr("y", 75)
+    }
+
+    function wipeGenome() {
+      d3.select("svg#genome").selectAll("g").remove();
+      d3.select("svg#genome").selectAll("text").remove();
+    }
+
+    function drawMutations() {
+      wipeMutations();
+      const line = d3.line();
+      for (let haplotype of data.haplotypes.visible) {
+        for (let mutation of data.mutations[haplotype]) {
+          let x = data.scaleG(mutation.pos)
+          d3.select("svg#genome")
+            .append("g")
+            .append("path")
+            .attr("class", "mutation")
+            .attr("d", line([[x,35],[x,49]]))
+            .style("stroke", "#333")
+            .style("opacity", 0.3)
+            .style("fill", "none");
+        }
+        d3.select("svg#genome")
+          .append("g")
+          .selectAll("circle.mutation")
+          .data(data.mutations[haplotype])
+          .join("circle")
+          .attr("class", "mutation")
+          .attr("r", data.nodeR)
+          .attr("cx", d => data.scaleG(d.pos))
+          .attr("cy", 30)
+          .attr("stroke", "#333")
+          .attr("opacity", 0.3);
+      }
+    }
+
+    function wipeMutations() {
+      wipeSelector(".mutation");
+    }
+
     function drawHaplotype() {
-      let points = data.points.filter(d => data.selected.includes(d.haplotype));
       wipeHaplotype();
+      const points = data.points.filter(d => data.haplotypes.visible.includes(d.haplotype));
       drawDuration(points);
       drawFirstday(points);
       drawLastday(points);
-      changeDuration();
+      toggleDuration();
     }
 
     function wipeHaplotype() {
@@ -461,16 +543,6 @@
       x2 = data.scaleX(d.lastday) - data.canvas.magic;
       y = data.scaleY(data.offset - data.prefectures[d.prefecture].code);
       return d3.line()([[x1,y], [x2,y]]);
-    }
-
-    function changeDuration() {
-      if (d3.select("#duration").property("checked")) {
-        showSelector(".durations");
-        showSelector(".lastdays");
-      } else {
-        hideSelector(".durations");
-        hideSelector(".lastdays");
-      }
     }
 
     function drawFirstday(points) {
@@ -504,74 +576,10 @@
         .style("fill", d => data.pallet(d.haplotype));
     }
 
-    function toggleHaplotype(haplotype) {
-      if (data.selected[0] == haplotype && ! data.selected[1]) {
-        data.selected = Array.from(data.haplotypes);
-      } else {
-        data.selected = [ haplotype ];
-      }
-      drawMutations();
-      drawHaplolink();
-      drawHaplotype();
-    }
-
-    function changeHaplotype() {
-      if (this.options) {
-        data.selected = Array.from(this.options).filter(d => d.selected).map(d => d.value);
-        if (data.selected.includes("All") || data.selected.size == 0) {
-          data.selected = Array.from(data.haplotypes);
-        }
-      } else {
-        data.selected = Array.from(data.haplotypes);
-      }
-      drawMutations();
-      drawHaplolink();
-      drawHaplotype();
-    }
-
-    function brushHaplotypes() {
-      if (d3.event.selection) {
-        const [minX, maxX] = d3.event.selection;
-        const minDate = Date.parse(data.scaleX.invert(minX));
-        const maxDate = Date.parse(data.scaleX.invert(maxX));
-        const selected = data.points.filter(point => {
-          if (d3.select("#duration").property("checked")) {
-            return (
-              (point.firstday > minDate && point.firstday < maxDate) ||
-              (point.lastday  > minDate && point.lastday  < maxDate)
-            )
-          } else {
-            return (point.firstday > minDate && point.firstday < maxDate)
-          }
-        })
-        data.selected = uniqHaplotypes(selected);
-        drawMutations();
-        drawHaplolink();
-        drawHaplotype();
-      } else {
-        changeHaplotype();
-      }
-    }
-
-    function uniqHaplotypes(haplotypes) {
-      let unique = new Set();
-      for (let d of haplotypes) {
-        unique.add(d.haplotype);
-      }
-      return Array.from(unique);
-    }
-
-    function changeDataset() {
-      data.files.haplotypes = Array.from(this.options).filter(d => d.selected).map(d => d.value).shift();
-      data.dataname = data.datasets.filter(d => d.file == data.files.haplotypes).map(d => d.name).shift();
-      data.haplotypes = new Set();
-      setup();
-    }
-
     function drawHaplolink() {
       wipeHaplolink();
-      d3.select("svg#chart").append("g").attr("class", "haplolinks")
-      for (let haplotype of data.selected) {
+      d3.select("svg#chart").append("g").attr("class", "haplolinks");
+      for (let haplotype of data.haplotypes.visible) {
         let haplopoints = data.points.filter(d => d.haplotype == haplotype);
         d3.select("svg#chart").select(".haplolinks")
           .append("path")
@@ -592,22 +600,6 @@
       return d3.line()
         .x(d => data.scaleX(d.firstday) - data.canvas.magic)
         .y(d => data.scaleY(data.offset - data.prefectures[d.prefecture].code));
-    }
-
-    function changeHaplolink() {
-      wipeHaplolink();
-      if (d3.select("#haplolink").property("checked")) {
-        drawHaplolink();
-        drawHaplotype();
-      }
-    }
-
-    function toggleHaplolink() {
-      if (d3.select("#haplolink").property("checked")) {
-        drawHaplolink();
-      } else {
-        wipeHaplolink();
-      }
     }
 
     function showInfobox(d) {
