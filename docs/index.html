@@ -131,7 +131,14 @@
     }
 
     function initHaplotypes() {
-      data.haplotypes.visible = Array.from(data.haplotypes.all);
+      const all = Array.from(data.haplotypes.all);
+      data.haplotypes.selected = all;
+      data.haplotypes.visible = all;
+      data.haplotypes.emerged = all.map(haplotype => {
+        const haplotypes = data.points.filter(point => point.haplotype == haplotype)
+        const emerged = d3.min(haplotypes, d => d.firstday);
+        return haplotypes.filter(point => point.firstday == emerged).shift()
+      }).filter(haplotype => haplotype);  // Remove undefined from map
     }
 
     function updateAll() {
@@ -305,8 +312,6 @@
           prefecture: row.prefecture
         }
       }).then(dataset => {
-        data.haplotypes.selected = Array.from(data.haplotypes.all);
-        data.haplotypes.visible = Array.from(data.haplotypes.all);
         data.points = dataset;
         data.scaleX.domain([
           d3.min(dataset, d => d.firstday) - oneday,
@@ -498,27 +503,15 @@
       // Reference
       d3.select("svg#genome")
         .append("g")
-        .selectAll("path.mutation")
+        .selectAll("path.reference-mutation")
         .data(data.mutations["Reference"])
         .join("path")
         .attr("class", "reference-mutation")
-        .attr("d", d => line([[data.scaleG(d.pos),45],[data.scaleG(d.pos),49]]))
-        .style("stroke", "#333")
-        .style("opacity", 0.3)
-        .style("fill", "none");
-      d3.select("svg#genome")
-        .append("g")
-        .selectAll("circle.mutation")
-        .data(data.mutations["Reference"])
-        .join("circle")
-        .attr("class", "reference-mutation")
-        .attr("r", data.nodeR)
-        .attr("cx", d => data.scaleG(d.pos))
-        .attr("cy", 40)
-        .style("stroke", "#333")
+        .attr("transform", d => `translate(${data.scaleG(d.pos)},55)`)
+        .attr("d", d3.symbol().type(d3.symbolDiamond))
         .style("fill", "#333")
-        .style("opacity", 0.3);
-
+        .style("opacity", 0.5);
+      // Mutations in haplotypes
       const mutations = uniqMutations();
       d3.select("svg#genome")
         .append("g")
@@ -526,7 +519,7 @@
         .data(mutations)
         .join("path")
         .attr("class", "mutation")
-        .attr("d", d => line([[data.scaleG(d.pos),30],[data.scaleG(d.pos),49]]))
+        .attr("d", d => line([[data.scaleG(d.pos),35],[data.scaleG(d.pos),50]]))
         .style("stroke", "#333")
         .style("fill", "none")
         .style("opacity", 0.3);
@@ -538,7 +531,7 @@
         .attr("class", "mutation")
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleG(d.pos))
-        .attr("cy", 25)
+        .attr("cy", 30)
         .style("stroke", "#333")
         .style("fill", "#333")
         .style("opacity", 0.3);
@@ -609,6 +602,7 @@
         .attr("cx", d => data.scaleX(d.firstday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
         .style("fill", d => data.pallet(d.haplotype))
+        .style("stroke", d => data.haplotypes.emerged.includes(d) ? "#333" : false)
         .on("click", d => toggleHaplotype(d.haplotype))
         .on("mouseover", showInfobox);
       d3.selectAll(".firstday")
@@ -634,7 +628,7 @@
       wipeHaplolink();
       d3.select("svg#chart").append("g").attr("class", "haplolinks");
       // Needs to be a for loop to avoid linking different haplotypes
-      // data.haplotypes.visible.map(haplotype => {})
+      // not like data.haplotypes.visible.map(haplotype => {})
       for (let haplotype of data.haplotypes.visible) {
         let haplopoints = data.points.filter(d => d.haplotype == haplotype);
         if (haplopoints.length > 1) {
