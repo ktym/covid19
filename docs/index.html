@@ -152,8 +152,12 @@
     }
 
     function updateChart() {
-      drawHaplolink();
+      drawLineage();
+      drawTrace();
       drawHaplotype();
+      toggleLineage();
+      toggleTrace();
+      toggleDuration();
     }
 
     function wipeAll() {
@@ -227,7 +231,7 @@
         .attr("y", y1 + onerow / 2 + 3)
         .attr("width", data.canvas.width - (data.margin.left + data.margin.right))
         .attr("height", y2 - y1 - 6)
-        .style("fill", "#999")
+        .style("fill", "#999999")
         .style("opacity", 0.3);
     }
 
@@ -250,6 +254,26 @@
       updateAll();
     }
 
+    function toggleLineage() {
+      if (d3.select("#lineage").property("checked")) {
+        showSelector(".lineages");
+        d3.selectAll(".firstday.emerged").style("stroke", "#666666");
+      } else {
+        hideSelector(".lineages");
+        d3.selectAll(".firstday.emerged").style("stroke", "");
+      }
+    }
+
+    function toggleTrace() {
+      if (d3.select("#trace").property("checked")) {
+        showSelector(".traces");
+        showSelector(".firstday.traced");
+      } else {
+        hideSelector(".traces");
+        hideSelector(".firstdaqy.traced");
+      }
+    }
+
     function toggleDuration() {
       if (d3.select("#duration").property("checked")) {
         showSelector(".durations");
@@ -257,14 +281,6 @@
       } else {
         hideSelector(".durations");
         hideSelector(".lastdays");
-      }
-    }
-
-    function toggleHaplolink() {
-      if (d3.select("#haplolink").property("checked")) {
-        showSelector(".haplolinks");
-      } else {
-        hideSelector(".haplolinks");
       }
     }
 
@@ -360,10 +376,12 @@
         .on("change", changeHaplotypes);
       d3.select("#dataset")
         .on("change", changeDataset);
+      d3.select("#lineage")
+        .on("change", toggleLineage);
+      d3.select("#trace")
+        .on("change", toggleTrace);
       d3.select("#duration")
         .on("change", toggleDuration);
-      d3.select("#haplolink")
-        .on("change", toggleHaplolink);
       d3.select(window)
         .on("resize", updateGenome);
       d3.select("#resolution-label")
@@ -509,7 +527,7 @@
         .attr("class", "reference-mutation")
         .attr("transform", d => `translate(${data.scaleG(d.pos)},55)`)
         .attr("d", d3.symbol().type(d3.symbolDiamond))
-        .style("fill", "#333")
+        .style("fill", "#333333")
         .style("opacity", 0.5);
       // Mutations in haplotypes
       const mutations = uniqMutations();
@@ -520,7 +538,7 @@
         .join("path")
         .attr("class", "mutation")
         .attr("d", d => line([[data.scaleG(d.pos),35],[data.scaleG(d.pos),50]]))
-        .style("stroke", "#333")
+        .style("stroke", "#333333")
         .style("fill", "none")
         .style("opacity", 0.3);
       d3.select("svg#genome")
@@ -532,8 +550,8 @@
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleG(d.pos))
         .attr("cy", 30)
-        .style("stroke", "#333")
-        .style("fill", "#333")
+        .style("stroke", "#333333")
+        .style("fill", "#333333")
         .style("opacity", 0.3);
     }
 
@@ -558,8 +576,8 @@
       wipeHaplotype();
       const points = data.points.filter(d => data.haplotypes.visible.includes(d.haplotype));
       drawDuration(points);
-      drawFirstday(points);
       drawLastday(points);
+      drawFirstday(points);
       toggleDuration();
     }
 
@@ -575,10 +593,9 @@
         .selectAll("path.duration")
         .data(points)
         .join("path")
-        .attr("class", "duration")
+        .attr("class", d => data.haplotypes.emerged.includes(d) ? "duration emerged" : "duration traced")
         .attr("fill", "none")
         .attr("stroke", d => data.pallet(d.haplotype))
-      //.attr("stroke-width", data.edgeW)
         .attr("stroke-width", d => Math.log(d.total))
         .attr("d", d => duration(d))
         .on("mouseover", showInfobox)
@@ -597,12 +614,11 @@
         .selectAll("circle.firstday")
         .data(points)
         .join("circle")
-        .attr("class", "firstday")
+        .attr("class", d => data.haplotypes.emerged.includes(d) ? "firstday emerged" : "firstday traced")
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.firstday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
         .style("fill", d => data.pallet(d.haplotype))
-        .style("stroke", d => data.haplotypes.emerged.includes(d) ? "#333" : false)
         .on("click", d => toggleHaplotype(d.haplotype))
         .on("mouseover", showInfobox);
       d3.selectAll(".firstday")
@@ -614,7 +630,7 @@
         .selectAll("circle.lastday")
         .data(points)
         .join("circle")
-        .attr("class", "lastday")
+        .attr("class", d => data.haplotypes.emerged.includes(d) ? "lastday emerged" : "lastday traced")
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.lastday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
@@ -624,32 +640,64 @@
         .style("fill", d => data.pallet(d.haplotype));
     }
 
-    function drawHaplolink() {
-      wipeHaplolink();
-      d3.select("svg#chart").append("g").attr("class", "haplolinks");
+    function drawLineage() {
+      wipeLineage();
+      d3.select("svg#chart").append("g").attr("class", "lineages");
+      for (let childId of data.haplotypes.visible) {
+        const parentId = childId.replace(/\.[^.]+$/, '');
+        if (parentId != childId) {
+          const child = data.haplotypes.emerged.filter(point => point.haplotype == childId).shift();
+          const parent = data.haplotypes.emerged.filter(point => point.haplotype == parentId).shift();
+          if (parent) {
+            const points = [parent, child]
+            d3.select("svg#chart").select(".lineages")
+              .append("path")
+              .datum(points)
+              .join("path")
+              .attr("class", "lineage")
+              .attr("fill", "none")
+              .attr("stroke", d3.rgb("#666666"))
+              .attr("stroke-dasharray", "1, 4")
+              .attr("d", haploline(points));
+            if (! data.haplotypes.visible.includes(parent.haplotype)) {
+              data.haplotypes.visible.push(parent.haplotype);
+            }
+          }
+        }
+      }
+      toggleLineage();
+    }
+
+    function wipeLineage() {
+      wipeSelector(".lineages");
+    }
+
+    function drawTrace() {
+      wipeTrace();
+      d3.select("svg#chart").append("g").attr("class", "traces");
       // Needs to be a for loop to avoid linking different haplotypes
       // not like data.haplotypes.visible.map(haplotype => {})
       for (let haplotype of data.haplotypes.visible) {
         let haplopoints = data.points.filter(d => d.haplotype == haplotype);
         if (haplopoints.length > 1) {
-          d3.select("svg#chart").select(".haplolinks")
+          d3.select("svg#chart").select(".traces")
             .append("path")
             .datum(haplopoints)
             .join("path")
-            .attr("class", "haplolink")
+            .attr("class", "trace")
             .attr("fill", "none")
             .attr("stroke", d3.rgb("#cccccc"))
-            .attr("d", haplolink(haplopoints));
+            .attr("d", haploline(haplopoints));
         }
       }
-      toggleHaplolink();
+      toggleTrace();
     }
 
-    function wipeHaplolink() {
-      wipeSelector(".haplolinks");
+    function wipeTrace() {
+      wipeSelector(".traces");
     }
 
-    function haplolink() {
+    function haploline(d) {
       return d3.line()
         .x(d => data.scaleX(d.firstday) - data.canvas.magic)
         .y(d => data.scaleY(data.offset - data.prefectures[d.prefecture].code));
@@ -803,13 +851,18 @@
         </div>
 
         <div class="form-check form-check-inline form-switch app-align">
-          <input type="checkbox" id="duration" class="form-check-input">
-          <label class="form-check-label" for="duration">Duration</label>
+          <input type="checkbox" id="lineage" class="form-check-input">
+          <label class="form-check-label" for="lineage">Lineage</label>
         </div>
 
         <div class="form-check form-check-inline form-switch app-align">
-          <input type="checkbox" id="haplolink" class="form-check-input" checked>
-          <label class="form-check-label" for="haplolink">Haplolink</label>
+          <input type="checkbox" id="trace" class="form-check-input" checked>
+          <label class="form-check-label" for="trace">Trace</label>
+        </div>
+
+        <div class="form-check form-check-inline form-switch app-align">
+          <input type="checkbox" id="duration" class="form-check-input">
+          <label class="form-check-label" for="duration">Duration</label>
         </div>
 
         <div class="btn-group form-check-inline" role="group" aria-label="change-resolution">
