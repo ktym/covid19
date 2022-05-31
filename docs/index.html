@@ -18,7 +18,7 @@
       // Defaults
       canvas: {width: 3840, height: 1000, magic: 5},
       margin: {top: 10, bottom: 90, left: 90, right: 10},
-      dataname: "AY.29 2022-03-24 (n>10)",
+      dataname: "Delta AY.29 2022-03-24 (n>10)",
       files: {
         /* Default haplotypes data (data.haplotypes.all) */
         haplotypes: "data/20220324/ay29_over10.tsv",
@@ -32,49 +32,34 @@
 
       // Options
       datasets: [
-        { /* All data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
-          dataname: "AY.29 20220324 (All)",
-          haplotypes: "data/20220324/ay29.tsv",
+        { /* All alpha data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
+          dataname: "Alpha 20220324 (All)",
+          haplotypes: "data/20220525/alpha_summary.tsv",
+          mutations: "data/20220525/alpha_mutations.json"
+        },
+        { /* Subset data (n > 10) */
+          dataname: "Alpha 20220324 (n>10)",
+          haplotypes: "data/20220525/alpha_summary_over10.tsv",
+          mutations: "data/20220525/alpha_mutations.json"
+        },
+        { /* All delta AY.29 data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
+          dataname: "Delta 20220324 (All)",
+          haplotypes: "data/20220324/ay29_wof77.tsv",
           mutations: "data/20220324/ay29_mutations.json"
         },
         { /* Subset data (n > 10) */
-          dataname: "AY.29 20220324 (n>10)",
+          dataname: "Delta 20220324 (n>10)",
           haplotypes: "data/20220324/ay29_over10.tsv",
           mutations: "data/20220324/ay29_mutations.json"
         },
-        { /* Subset data (n > 50) */
-          dataname: "AY.29 20220324 (n>50)",
-          haplotypes: "data/20220324/ay29_over50.tsv",
-          mutations: "data/20220324/ay29_mutations.json"
-        },
-        { /* Subset data (1.*) */
-          dataname: "AY.29 20220324 (1.*)",
-          haplotypes: "data/20220324/ay29_1.tsv",
-          mutations: "data/20220324/ay29_mutations.json"
-        },
-        { /* Shizuoka (1.195.2.60) */
-          dataname: "AY.29 20220324 (1.195.2.*)",
-          haplotypes: "data/20220324/ay29_1.195.2.60.tsv",
-          mutations: "data/20220324/ay29_mutations.json"
-        },
-        { /* All data (data.points) */
-          dataname: "AY.29 20220128 (All)",
+        { /* All delta AY.29 data as of 2022/1 (data.points) */
+          dataname: "Delta 20220128 (All)",
           haplotypes: "data/20220128/ay29.tsv",
           mutations: "data/20220128/ay29_mutations.json"
         },
         { /* Subset data (n > 10) */
-          dataname: "AY.29 20220128 (n>10)",
+          dataname: "Delta 20220128 (n>10)",
           haplotypes: "data/20220128/ay29_over10.tsv",
-          mutations: "data/20220128/ay29_mutations.json"
-        },
-        { /* Subset data (1.*) */
-          dataname: "AY.29 20220128 (1.*)",
-          haplotypes: "data/20220128/ay29_1.tsv",
-          mutations: "data/20220128/ay29_mutations.json"
-        },
-        { /* Shizuoka (1.172.1.9) */
-          dataname: "AY.29 20220128 (1.172.1.*)",
-          haplotypes: "data/20220128/ay29_1.172.1.tsv",
           mutations: "data/20220128/ay29_mutations.json"
         }
       ],
