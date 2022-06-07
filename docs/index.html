@@ -32,6 +32,16 @@
 
       // Options
       datasets: [
+        { /* All 2nd wave data B.1.1.284 */
+          dataname: "2nd wave 20220324 (All)",
+          haplotypes: "data/20220607/2ndwave_summary.tsv",
+          mutations: "data/20220607/2ndwave_mutations.json"
+        },
+        { /* All 3rd wave data B.1.1.214 */
+          dataname: "3rd wave 20220324 (All)",
+          haplotypes: "data/20220607-3W/3rdwave_summary.tsv",
+          mutations: "data/20220607-3W/3rdwave_mutations.json"
+        },
         { /* All alpha data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
           dataname: "Alpha 20220324 (All)",
           haplotypes: "data/20220525/alpha_summary.tsv",
