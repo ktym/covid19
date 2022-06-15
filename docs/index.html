@@ -18,12 +18,13 @@
       // Defaults
       canvas: {width: 3840, height: 1000, magic: 5},
       margin: {top: 10, bottom: 90, left: 90, right: 10},
-      dataname: "Delta AY.29 2022-03-24 (n>10)",
+      dataname: "5th wave Delta AY.29 (n>=10)",
+      wavename: "5W",
       files: {
-        /* Default haplotypes data (data.haplotypes.all) */
-        haplotypes: "data/20220324/ay29_over10.tsv",
+        /* Default haplotypes data (data.haplotypes.all: data.points > data.haplotypes.selected , data.haplotypes.visible) */
+        haplotypes: "data/5W-durations-over10.tsv",
         /* Default mutations in haplotypes (data.mutations) */
-        mutations: "data/20220324/ay29_mutations.json",
+        mutations: "data/5W-mutations.json",
         /* Genome and gene annotations (data.genome, data.genes) */
         annotations: "data/annotations.json",
         /* JIS X 0401 prefecture codes (data.areas, data.prefectures, data.offset) */
@@ -32,45 +33,77 @@
 
       // Options
       datasets: [
-        { /* All 2nd wave data B.1.1.284 */
-          dataname: "2nd wave 20220324 (All)",
-          haplotypes: "data/20220607/2ndwave_summary.tsv",
-          mutations: "data/20220607/2ndwave_mutations.json"
+        { /* 2nd wave data, n>=2 */
+          dataname: "2nd wave B.1.1.284",
+          wavename: "2W",
+          haplotypes: "data/2W-durations.tsv",
+          mutations: "data/2W-mutations.json"
         },
-        { /* All 3rd wave data B.1.1.214 */
-          dataname: "3rd wave 20220324 (All)",
-          haplotypes: "data/20220607/3rdwave_summary.tsv",
-          mutations: "data/20220607/3rdwave_mutations.json"
+        {
+          dataname: "- 2nd wave (All)",
+          wavename: "2W",
+          haplotypes: "data/2W-durations-all.tsv",
+          mutations: "data/2W-mutations.json"
         },
-        { /* All alpha data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
-          dataname: "Alpha 20220324 (All)",
-          haplotypes: "data/20220525/alpha_summary.tsv",
-          mutations: "data/20220525/alpha_mutations.json"
+        {
+          dataname: "- 2nd wave (n>=10)",
+          wavename: "2W",
+          haplotypes: "data/2W-durations-over10.tsv",
+          mutations: "data/2W-mutations.json"
         },
-        { /* Subset data (n > 10) */
-          dataname: "Alpha 20220324 (n>10)",
-          haplotypes: "data/20220525/alpha_summary_over10.tsv",
-          mutations: "data/20220525/alpha_mutations.json"
+        { /* 3rd wave data w/o errors, n>=2 */
+          dataname: "3rd wave B.1.1.214",
+          wavename: "3W",
+          haplotypes: "data/3W-durations.tsv",
+          mutations: "data/3W-mutations.json"
         },
-        { /* All delta AY.29 data (data.points > data.haplotypes.selected , data.haplotypes.visible) */
-          dataname: "Delta 20220324 (All)",
-          haplotypes: "data/20220324/ay29_wof77.tsv",
-          mutations: "data/20220324/ay29_mutations.json"
+        {
+          dataname: "- 3rd wave (All)",
+          wavename: "3W",
+          haplotypes: "data/3W-durations-all.tsv",
+          mutations: "data/3W-mutations.json"
         },
-        { /* Subset data (n > 10) */
-          dataname: "Delta 20220324 (n>10)",
-          haplotypes: "data/20220324/ay29_over10.tsv",
-          mutations: "data/20220324/ay29_mutations.json"
+        {
+          dataname: "- 3rd wave (n>=10)",
+          wavename: "3W",
+          haplotypes: "data/3W-durations-over10.tsv",
+          mutations: "data/3W-mutations.json"
         },
-        { /* All delta AY.29 data as of 2022/1 (data.points) */
-          dataname: "Delta 20220128 (All)",
-          haplotypes: "data/20220128/ay29.tsv",
-          mutations: "data/20220128/ay29_mutations.json"
+        { /* 4th wave data (Alpha) w/o errors, n>=2 */
+          dataname: "4th wave Alpha B.1.1.7",
+          wavename: "4W",
+          haplotypes: "data/4W-durations.tsv",
+          mutations: "data/4W-mutations.json"
         },
-        { /* Subset data (n > 10) */
-          dataname: "Delta 20220128 (n>10)",
-          haplotypes: "data/20220128/ay29_over10.tsv",
-          mutations: "data/20220128/ay29_mutations.json"
+        {
+          dataname: "- 4th wave Alpha (All)",
+          wavename: "4W",
+          haplotypes: "data/4W-durations-all.tsv",
+          mutations: "data/4W-mutations.json"
+        },
+        {
+          dataname: "- 4th wave Alpha (n>=10)",
+          wavename: "4W",
+          haplotypes: "data/4W-durations-over10.tsv",
+          mutations: "data/4W-mutations.json"
+        },
+        { /* 5th wave data (Delta/AY.29) w/o errors, n>=2 */
+          dataname: "5th wave Delta AY.29",
+          wavename: "5W",
+          haplotypes: "data/5W-durations.tsv",
+          mutations: "data/5W-mutations.json"
+        },
+        {
+          dataname: "- 5th wave Delta (All)",
+          wavename: "5W",
+          haplotypes: "data/5W-durations-all.tsv",
+          mutations: "data/5W-mutations.json"
+        },
+        {
+          dataname: "- 5th wave Delta (n>=10)",
+          wavename: "5W",
+          haplotypes: "data/5W-durations-over10.tsv",
+          mutations: "data/5W-mutations.json"
         }
       ],
 
@@ -283,6 +316,7 @@
       const selected = Array.from(this.options).filter(d => d.selected).shift();
       data.dataname = selected.value;
       const dataset = data.datasets.filter(d => d.dataname == data.dataname).shift();
+      data.wavename = dataset.wavename;
       data.files.haplotypes = dataset.haplotypes;
       data.files.mutations = dataset.mutations;
       data.haplotypes.all = new Set();
@@ -700,7 +734,7 @@
 
     function showInfobox(d) {
       d3.select("#infobox-haplotype-label")
-        .text(d.haplotype);
+        .text(data.wavename + ":" + d.haplotype);
       d3.select("#infobox-haplotype-prefecture")
         .text(data.prefectures[d.prefecture].label);
       d3.select("#infobox-haplotype-firstday")
@@ -814,7 +848,7 @@
         <div class="dropdown form-check-inline">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown-dataset" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi-file-earmark-text-fill" style="font-size: 1.2rem;"></i>
-            Change dataset &nbsp;&nbsp;
+            Change dataset &nbsp;&nbsp;&nbsp;
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdown-dataset" style="opacity: 0.8;">
             <li>
