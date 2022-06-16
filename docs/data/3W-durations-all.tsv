@@ -1,5 +1,4 @@
 haplotype	first	last	duration	total	prefecture
-}.1	2021-05-26	2021-05-26	1	1	Gunma
 1	2020-06-01	2020-06-01	1	1	Tochigi
 1	2020-06-22	2020-06-22	1	1	Saitama
 1	2020-07-04	2020-07-20	17	2	Kanagawa
@@ -4741,6 +4740,7 @@ haplotype	first	last	duration	total	prefecture
 1.13.1	2020-06-30	2020-06-30	1	1	Tokyo
 1.x.1	2020-06-22	2020-06-29	8	2	Saitama
 1.x.2	2020-06-20	2020-06-20	1	1	Saitama
+ac.1	2021-05-26	2021-05-26	1	1	Gunma
 c.1	2020-08-17	2020-11-09	85	7	Hyogo
 c.1	2020-09-12	2020-11-18	68	6	Osaka
 c.1	2020-09-29	2020-10-02	4	4	Hiroshima
