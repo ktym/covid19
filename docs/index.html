@@ -688,7 +688,8 @@
               .attr("stroke", d3.rgb("#666666"))
               .attr("stroke-dasharray", "1, 4")
               .attr("d", haploline(points));
-            if (! data.haplotypes.visible.includes(parent.haplotype)) {
+            //if (! data.haplotypes.visible.includes(parent.haplotype)) {
+            if (d3.select("#lineage").property("checked") && ! data.haplotypes.visible.includes(parent.haplotype)) {
               data.haplotypes.visible.push(parent.haplotype);
             }
           }
@@ -917,7 +918,9 @@
     Best viewed with a screen resolution of > <span id="recommended-width">2500</span>x1400
   </div>
 
-  <svg id="genome"/> <!-- preserveAspectRatio="xMidYMid meet"/-->
+  <div style="overflow-x: scroll;">
+    <svg id="genome"/> <!-- preserveAspectRatio="xMidYMid meet"/-->
+  </div>
 
   <div id="infobox-haplotype" class="btn-group" role="group" aria-label="Infobox haplotype" style="margin: 10px">
     <button type="button" class="btn btn-outline-secondary">
