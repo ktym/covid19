@@ -486,7 +486,6 @@
         d3.select("svg#chart").select(".areas")
           .append("rect")
           .attr("class", "area")
-/*          .style("opacity", "0.2") /* Added for SVG dump */
           .attr("x", data.margin.left)
           .attr("y", y1 + onerow / 2)
           .attr("width", data.canvas.width - (data.margin.left + data.margin.right))
@@ -538,17 +537,6 @@
         .text(d => d.region)
         .attr("x", d => data.scaleG(d.lower))
         .attr("y", 75)
-      /* Added for SVG dump
-      const tick = d3.select("svg#genome .axis-g")
-      tick.select(".domain")
-        .style("opacity", "0");
-      tick.selectAll("text")
-        .attr("transform", `translate(0, 5)`);
-      d3.select("svg#genome")
-        .selectAll("text")
-        .style("font-family", "sans-serif")
-        .style("font-size", "7pt");
-      */
     }
 
     function wipeGenome() {
@@ -807,8 +795,8 @@
        4. SVG string will be stored in a variable such as 'temp0' (or 'temp1', ...)
        5. Run 'copy(temp0)' in the console
        6. Open the Terminal.app on Mac and run pbpaste > chart.svg
-       7. Open the SVG file with https://www.svgviewer.dev/
-       8. or Edit with your favorite graphics editor (Illustrator, Vectornator etc.)
+       7. Open the SVG file with a browser and print into a PDF file or
+       8. Edit with your favorite graphics editor (https://www.svgviewer.dev/, Illustrator, Vectornator etc.)
     */
     function dumpGenome() {
       dumpSVG(d3.select("div#container-genome"));
