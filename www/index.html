@@ -486,6 +486,7 @@
         d3.select("svg#chart").select(".areas")
           .append("rect")
           .attr("class", "area")
+/*          .style("opacity", "0.2") /* Added for SVG dump */
           .attr("x", data.margin.left)
           .attr("y", y1 + onerow / 2)
           .attr("width", data.canvas.width - (data.margin.left + data.margin.right))
@@ -537,6 +538,17 @@
         .text(d => d.region)
         .attr("x", d => data.scaleG(d.lower))
         .attr("y", 75)
+      /* Added for SVG dump
+      const tick = d3.select("svg#genome .axis-g")
+      tick.select(".domain")
+        .style("opacity", "0");
+      tick.selectAll("text")
+        .attr("transform", `translate(0, 5)`);
+      d3.select("svg#genome")
+        .selectAll("text")
+        .style("font-family", "sans-serif")
+        .style("font-size", "7pt");
+      */
     }
 
     function wipeGenome() {
@@ -786,6 +798,36 @@
     function wipeSelector(selector) {
       d3.selectAll(selector).remove();
     }
+
+    /*
+      To save a SVG image in a file:
+       1. Open a development tool of the browser
+       2. Run the following functions in the console
+       3. Right click on the console output and choose "Store as a global variable"
+       4. SVG string will be stored in a variable such as 'temp0' (or 'temp1', ...)
+       5. Run 'copy(temp0)' in the console
+       6. Open the Terminal.app on Mac and run pbpaste > chart.svg
+       7. Open the SVG file with https://www.svgviewer.dev/
+       8. or Edit with your favorite graphics editor (Illustrator, Vectornator etc.)
+    */
+    function dumpGenome() {
+      dumpSVG(d3.select("div#container-genome"));
+    }
+    function dumpChart() {
+      dumpSVG(d3.select("div#container-chart"));
+    }
+    /*
+      <?xml version="1.0" standalone="yes"?>
+      <svg xmlns="http://www.w3.org/2000/svg" id="chart" ...
+      <style type="text/css"><![CDATA[
+        (... insert the style tag contents of this HTML here ...)
+      ]]></style>
+    */
+    function dumpSVG(container) {
+      const style = d3.select("style").html();
+      container.select("svg").append("style").html(style);
+      console.log(container.html());
+    }
   </script>
   <style>
     text {
@@ -918,8 +960,8 @@
     Best viewed with a screen resolution of > <span id="recommended-width">2500</span>x1400
   </div>
 
-  <div style="overflow-x: scroll;">
-    <svg id="genome"/> <!-- preserveAspectRatio="xMidYMid meet"/-->
+  <div style="overflow-x: scroll;" id="container-genome">
+    <svg id="genome" xmlns="http://www.w3.org/2000/svg" /> <!-- preserveAspectRatio="xMidYMid meet"/-->
   </div>
 
   <div id="infobox-haplotype" class="btn-group" role="group" aria-label="Infobox haplotype" style="margin: 10px">
@@ -949,8 +991,8 @@
     </button>
   </div>
 
-  <div style="overflow-x: scroll;">
-    <svg id="chart"/>
+  <div style="overflow-x: scroll;" id="container-chart">
+    <svg id="chart" xmlns="http://www.w3.org/2000/svg" />
   </div>
 </body>
 </html>
