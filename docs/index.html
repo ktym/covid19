@@ -439,6 +439,8 @@
         .on("click", changeResolution);
       d3.select("#lang")
         .on("click", toggleLang);
+      d3.select("#download")
+        .on("click", downloadChartSVG);
     }
 
     function drawAxes() {
@@ -772,8 +774,13 @@
       if (data.haplotypes.visible.includes(d.haplotype)) {
         d3.select("#infobox-haplotype-label")
           .text(data.wavename + ":" + d.haplotype);
-        d3.select("#infobox-haplotype-prefecture")
-          .text(data.prefectures[d.prefecture].label);
+        if (data.lang == "en") {
+          d3.select("#infobox-haplotype-prefecture")
+            .text(data.prefectures[d.prefecture].name);
+        } else {
+          d3.select("#infobox-haplotype-prefecture")
+            .text(data.prefectures[d.prefecture].label);
+        }
         d3.select("#infobox-haplotype-firstday")
           .text(d3.timeFormat("%Y-%m-%d")(d.firstday));
         d3.select("#infobox-haplotype-lastday")
@@ -830,26 +837,23 @@
       d3.selectAll(selector).remove();
     }
 
-    /*
-      To save a SVG image in a file:
-       1. Open a development tool of the browser
-       2. Run the following functions in the console
-       3. Right click on the console output and choose "Store as a global variable"
-       4. SVG string will be stored in a variable such as 'temp0' (or 'temp1', ...)
-       5. Run 'copy(temp0)' in the console
-       6. Open the Terminal.app on Mac and run pbpaste > chart.svg
-       7. Open the SVG file with a browser or a graphics editor (even print as a PDF file)
-    */
-    function dumpGenome() {
-      dumpSVG(d3.select("div#container-genome"));
-    }
-    function dumpChart() {
-      dumpSVG(d3.select("div#container-chart"));
-    }
     function dumpSVG(container) {
       const style = d3.select("style").html();
       container.select("svg").append("style").html(style);
-      console.log(container.html());
+      const svg = container.html();
+      return svg;
+    }
+    function downloadSVG(svg) {
+      const blob = new Blob([svg], {type: "data:image/svg+xml;base64"});
+      const url = window.URL.createObjectURL(blob);
+      const filename = "haplograph-" + d3.timeFormat("%Y%m%d-%H%M%S")(new Date) + ".svg";
+      d3.select("#download-link").attr("download", filename).attr("href", url);
+    }
+    function downloadGenomeSVG() {
+      downloadSVG(dumpSVG(d3.select("#container-genome")));
+    }
+    function downloadChartSVG() {
+      downloadSVG(dumpSVG(d3.select("#container-chart")));
     }
   </script>
   <style>
@@ -976,13 +980,18 @@
         </div>
 
         <div class="btn-group form-check-inline" role="group" aria-label="help-lang">
-          <button type="button" class="btn btn-outline-primary btn-sm lang-button" id="help">
-            <a href="./help" target="_blank">
-              <i class="bi-question-circle lang-icon"></i>
+          <button type="button" class="btn btn-outline-primary btn-sm lang-button" id="lang">
+            <i class="bi-globe lang-icon"></i>
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-sm download-button" id="download">
+            <a id="download-link">
+              <i class="bi-download download-icon"></i>
             </a>
           </button>
-            <button type="button" class="btn btn-outline-primary btn-sm lang-button" id="lang">
-            <i class="bi-globe lang-icon"></i>
+          <button type="button" class="btn btn-outline-primary btn-sm help-button" id="help">
+            <a href="./help" target="_blank">
+              <i class="bi-question-circle help-icon"></i>
+            </a>
           </button>
         </div>
       </form>
