@@ -662,7 +662,7 @@
         .attr("stroke", d => data.pallet(d.haplotype))
         .attr("stroke-width", d => Math.log(d.total))
         .attr("d", d => duration(d))
-        .on("mouseover", showInfobox)
+        .on("mouseover", showInfoboxDuration)
         .on("click", d => toggleHaplotype(d.haplotype));
     }
 
@@ -699,7 +699,7 @@
         .attr("cx", d => data.scaleX(d.lastday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
         .on("click", d => toggleHaplotype(d.haplotype))
-        .on("mouseover", showInfobox);
+        .on("mouseover", showInfoboxDuration);
       d3.selectAll(".lastday")
         .style("fill", d => data.pallet(d.haplotype));
     }
@@ -769,18 +769,26 @@
     }
 
     function showInfobox(d) {
-      d3.select("#infobox-haplotype-label")
-        .text(data.wavename + ":" + d.haplotype);
-      d3.select("#infobox-haplotype-prefecture")
-        .text(data.prefectures[d.prefecture].label);
-      d3.select("#infobox-haplotype-firstday")
-        .text(d3.timeFormat("%Y-%m-%d")(d.firstday));
-      d3.select("#infobox-haplotype-lastday")
-        .text(d3.timeFormat("%Y-%m-%d")(d.lastday));
-      d3.select("#infobox-haplotype-duration")
-        .text(`${d.duration} day(s)`);
-      d3.select("#infobox-haplotype-total")
-        .text(`${d.total} seq(s)/pref`);
+      if (data.haplotypes.visible.includes(d.haplotype)) {
+        d3.select("#infobox-haplotype-label")
+          .text(data.wavename + ":" + d.haplotype);
+        d3.select("#infobox-haplotype-prefecture")
+          .text(data.prefectures[d.prefecture].label);
+        d3.select("#infobox-haplotype-firstday")
+          .text(d3.timeFormat("%Y-%m-%d")(d.firstday));
+        d3.select("#infobox-haplotype-lastday")
+          .text(d3.timeFormat("%Y-%m-%d")(d.lastday));
+        d3.select("#infobox-haplotype-duration")
+          .text(`${d.duration} day(s)`);
+        d3.select("#infobox-haplotype-total")
+          .text(`${d.total} seq(s)/pref`);
+      }
+    }
+
+    function showInfoboxDuration(d) {
+      if (d3.select("#duration").property("checked")) {
+        showInfobox(d);
+      }
     }
 
     function changeResolution() {
@@ -830,8 +838,7 @@
        4. SVG string will be stored in a variable such as 'temp0' (or 'temp1', ...)
        5. Run 'copy(temp0)' in the console
        6. Open the Terminal.app on Mac and run pbpaste > chart.svg
-       7. Open the SVG file with a browser and print into a PDF file or
-       8. Edit with your favorite graphics editor (https://www.svgviewer.dev/, Illustrator, Vectornator etc.)
+       7. Open the SVG file with a browser or a graphics editor (even print as a PDF file)
     */
     function dumpGenome() {
       dumpSVG(d3.select("div#container-genome"));
@@ -839,13 +846,6 @@
     function dumpChart() {
       dumpSVG(d3.select("div#container-chart"));
     }
-    /*
-      <?xml version="1.0" standalone="yes"?>
-      <svg xmlns="http://www.w3.org/2000/svg" id="chart" ...
-      <style type="text/css"><![CDATA[
-        (... insert the style tag contents of this HTML here ...)
-      ]]></style>
-    */
     function dumpSVG(container) {
       const style = d3.select("style").html();
       container.select("svg").append("style").html(style);
