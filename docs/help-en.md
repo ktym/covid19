@@ -6,9 +6,9 @@ SARS-CoV-2 HaploGraph visualizes the emergence timing and geographical transmiss
 
 ## Data used
 
-GISAID EpiCoV data downloaded as of June 4, 2022 was used. Japan-related SARS-CoV-2 genomes were extracted based on the annotation in the metadata files. The GISAID IDs used in SARS-CoV-2 HaploGraph was summarized in [[doi.org/10.55876/gis8.221004wz|http://doi.org/10.55876/gis8.221004wz]].
+GISAID EpiCoV data downloaded as of June 4, 2022 was used. Japan-related SARS-CoV-2 genomes were extracted based on the annotation in the metadata files. The GISAID IDs used in SARS-CoV-2 HaploGraph was summarized in [doi.org/10.55876/gis8.221004wz](http://doi.org/10.55876/gis8.221004wz).
 
-The start and end dates of each epidemic wave followed  [[the records of the Ministry of Health, Labour and Welfare (MHLW) of Japan|https://www.mhlw.go.jp/content/10900000/000931584.pdf]].
+The start and end dates of each epidemic wave followed  [the records of the Ministry of Health, Labour and Welfare (MHLW) of Japan](https://www.mhlw.go.jp/content/10900000/000931584.pdf).
 * 2nd: 2020-06-14 to 2020-10-09
 * 3rd: 2020-10-10 to 2021-02-28
 * 4th: 2021-03-01 to 2021-06-20
@@ -22,8 +22,8 @@ For each SARS-CoV-2 epidemic wave in Japan, the reference haplotype was determin
 
 
 ## Usage
-<img width="960" alt="Fig1" src="https://user-images.githubusercontent.com/35960727/219287382-1e1f34a5-63a2-4309-a947-a574d8226bff.png">
 
+<img width="960" alt="Fig1" src="https://user-images.githubusercontent.com/35960727/219287382-1e1f34a5-63a2-4309-a947-a574d8226bff.png">
 
 In the SARS-CoV-2 HaploGraph webpage, from the "Change dataset" on the top menu bar, the dataset for an epidemic wave can be selected. Two datasets are available for each wave: “All” and “50%”. Note that "All" is only available for the GitHub version. “All” contains all haplotypes, and “50%” includes all haplotypes up to the smallest frequency haplotype whose sum exceeds 50% when all frequencies are ordered from highest to lowest. Then, the “Select haplotype(s)”, one or more haplotype(s) can be selected. 
 
@@ -55,7 +55,7 @@ For the viewer, we used the “complete genomes” —genomes without any undete
 
 4) Recombination of variants were not considered. 
 
-Some variants may emerge though recombination events. It is difficult to distinguish whether mutation(s) emerged by recombination or parallel evolution when the number of mutations is limited. Indeed, many recombination events are reported for the SARS-CoV-2 genomes, particularly for the Omicron variants ([[Ou et al., 2022|https://doi.org/10.1038/s41392-022-00992-2]]). Since various nucleotide substitutions accumulated in the genomes of Omicron variants, recombination of Omicron variants could be easily detected. Before the Omicron strain arose, one of the few examples of recombinant strains reported was the XC variant, a recombination of the Delta and Alpha mutants detected in Japan ([[Sekizuka et al., 2022|https://doi.org/10.7883/yoken.JJID.2021.844]]). The lack of consideration of recombination is one of the limitations of this study.
+Some variants may emerge though recombination events. It is difficult to distinguish whether mutation(s) emerged by recombination or parallel evolution when the number of mutations is limited. Indeed, many recombination events are reported for the SARS-CoV-2 genomes, particularly for the Omicron variants ([Ou et al., 2022](https://doi.org/10.1038/s41392-022-00992-2)). Since various nucleotide substitutions accumulated in the genomes of Omicron variants, recombination of Omicron variants could be easily detected. Before the Omicron strain arose, one of the few examples of recombinant strains reported was the XC variant, a recombination of the Delta and Alpha mutants detected in Japan ([Sekizuka et al., 2022](https://doi.org/10.7883/yoken.JJID.2021.844)). The lack of consideration of recombination is one of the limitations of this study.
 
 
 ## Reference
@@ -69,6 +69,6 @@ SARS-CoV-2 HaploGraph: visualization of SARS-CoV-2 haplotypes spread in Japan. J
 
 ## Acknowledgement
 
-We gratefully acknowledge all data contributors: scientists and medical staff, their originating laboratories responsible for obtaining the specimens, and their submitting laboratories for generating the genetic sequence and metadata and sharing via the GISAID Initiative: [[doi.org/10.55876/gis8.221004wz|http://doi.org/10.55876/gis8.221004wz]]
+We gratefully acknowledge all data contributors: scientists and medical staff, their originating laboratories responsible for obtaining the specimens, and their submitting laboratories for generating the genetic sequence and metadata and sharing via the GISAID Initiative: [doi.org/10.55876/gis8.221004wz](http://doi.org/10.55876/gis8.221004wz)
 
 This work was supported by the JST CREST JPMJCR20H6 and JPMJCR20H1, by AMED JP20he0622043 and JP20fk0108536, and by ROIS (Research Organization of Information and Systems).
