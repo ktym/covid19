@@ -10,6 +10,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- D3 -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- gzip -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
   <script>
     /*
       Parameters
@@ -19,92 +21,77 @@
       canvas: {width: 3840, height: 1000, magic: 5},
       margin: {top: 10, bottom: 90, left: 90, right: 10},
       lang: "en",
-      dataname: "5th wave Delta AY.29 (n>=10)",
-      wavename: "5W",
+      dataname: "2nd wave B.1.1.284 (50%)",
+      wavelabel: "2nd wave (50%)",
+      wavename: "2W",
       files: {
         /* Default haplotypes data (data.haplotypes.all: data.points > data.haplotypes.selected , data.haplotypes.visible) */
-        haplotypes: "data/5W-durations-over10.tsv",
+        haplotypes: "data/2W-durations-50p.tsv",
         /* Default mutations in haplotypes (data.mutations) */
-        mutations: "data/5W-mutations.json",
+        mutations: "data/2W-mutations.json.gz",
         /* Genome and gene annotations (data.genome, data.genes) */
-        annotations: "data/annotations.json",
+        annotations: "data/annotations.json.gz",
         /* JIS X 0401 prefecture codes (data.areas, data.prefectures, data.offset) */
-        districts: "data/districts.json"
+        districts: "data/districts.json.gz"
       },
 
       // Options
       datasets: [
-        { /* 2nd wave data, n>=2 */
-          dataname: "2nd wave B.1.1.284",
+        { /* 2nd wave data (50%) */
+          dataname: "2nd wave B.1.1.284 (50%)",
+          wavelabel: "2nd wave (50%)",
           wavename: "2W",
-          haplotypes: "data/2W-durations.tsv",
-          mutations: "data/2W-mutations.json"
+          haplotypes: "data/2W-durations-50p.tsv",
+          mutations: "data/2W-mutations.json.gz"
         },
         {
-          dataname: "- 2nd wave (All)",
+          dataname: "2nd wave B.1.1.284 (All)",
+          wavelabel: "- 2nd wave (All)",
           wavename: "2W",
           haplotypes: "data/2W-durations-all.tsv",
-          mutations: "data/2W-mutations.json"
+          mutations: "data/2W-mutations.json.gz"
         },
-        {
-          dataname: "- 2nd wave (n>=10)",
-          wavename: "2W",
-          haplotypes: "data/2W-durations-over10.tsv",
-          mutations: "data/2W-mutations.json"
-        },
-        { /* 3rd wave data w/o errors, n>=2 */
-          dataname: "3rd wave B.1.1.214",
+        { /* 3rd wave data (50%) */
+          dataname: "3rd wave B.1.1.214 (50%)",
+          wavelabel: "3rd wave (50%)",
           wavename: "3W",
-          haplotypes: "data/3W-durations.tsv",
-          mutations: "data/3W-mutations.json"
+          haplotypes: "data/3W-durations-50p.tsv",
+          mutations: "data/3W-mutations.json.gz"
         },
         {
-          dataname: "- 3rd wave (All)",
+          dataname: "3rd wave B.1.1.214 (All)",
+          wavelabel: "- 3rd wave (All)",
           wavename: "3W",
           haplotypes: "data/3W-durations-all.tsv",
-          mutations: "data/3W-mutations.json"
+          mutations: "data/3W-mutations.json.gz"
         },
-        {
-          dataname: "- 3rd wave (n>=10)",
-          wavename: "3W",
-          haplotypes: "data/3W-durations-over10.tsv",
-          mutations: "data/3W-mutations.json"
-        },
-        { /* 4th wave data (Alpha) w/o errors, n>=2 */
-          dataname: "4th wave Alpha B.1.1.7",
+        { /* 4th wave data (Alpha) (50%) */
+          dataname: "4th wave Alpha B.1.1.7 (50%)",
+          wavelabel: "4th wave (50%)",
           wavename: "4W",
-          haplotypes: "data/4W-durations.tsv",
-          mutations: "data/4W-mutations.json"
+          haplotypes: "data/4W-durations-50p.tsv",
+          mutations: "data/4W-mutations.json.gz"
         },
         {
-          dataname: "- 4th wave (All)",
+          dataname: "4th wave Alpha B.1.1.7 (All)",
+          wavelabel: "- 4th wave (All)",
           wavename: "4W",
           haplotypes: "data/4W-durations-all.tsv",
-          mutations: "data/4W-mutations.json"
+          mutations: "data/4W-mutations.json.gz"
         },
-        {
-          dataname: "- 4th wave (n>=10)",
-          wavename: "4W",
-          haplotypes: "data/4W-durations-over10.tsv",
-          mutations: "data/4W-mutations.json"
-        },
-        { /* 5th wave data (Delta/AY.29) w/o errors, n>=2 */
-          dataname: "5th wave Delta AY.29",
+        { /* 5th wave data (Delta/AY.29) (50%) */
+          dataname: "5th wave Delta AY.29 (50%)",
+          wavelabel: "5th wave (50%)",
           wavename: "5W",
-          haplotypes: "data/5W-durations.tsv",
-          mutations: "data/5W-mutations.json"
+          haplotypes: "data/5W-durations-50p.tsv",
+          mutations: "data/5W-mutations.json.gz"
         },
         {
-          dataname: "- 5th wave (All)",
+          dataname: "5th wave Delta AY.29 (All)",
+          wavelabel: "- 5th wave (All)",
           wavename: "5W",
           haplotypes: "data/5W-durations-all.tsv",
-          mutations: "data/5W-mutations.json"
-        },
-        {
-          dataname: "- 5th wave (n>=10)",
-          wavename: "5W",
-          haplotypes: "data/5W-durations-over10.tsv",
-          mutations: "data/5W-mutations.json"
+          mutations: "data/5W-mutations.json.gz"
         }
       ],
 
@@ -317,11 +304,13 @@
       if (data.lang == "en") {
         data.lang = "ja";
         d3.select("html").attr("lang", "ja");
+        d3.select("#help-link").attr("href", "help-ja")
         wipeSelector(".axis-y");
         drawAxisY();
       } else {
         data.lang = "en";
         d3.select("html").attr("lang", "en");
+        d3.select("#help-link").attr("href", "help-en")
         wipeSelector(".axis-y");
         drawAxisY();
       }
@@ -329,8 +318,9 @@
 
     function changeDataset() {
       const selected = Array.from(this.options).filter(d => d.selected).shift();
-      data.dataname = selected.value;
-      const dataset = data.datasets.filter(d => d.dataname == data.dataname).shift();
+      data.wavelabel = selected.value;
+      const dataset = data.datasets.filter(d => d.wavelabel == data.wavelabel).shift();
+      data.dataname = dataset.dataname;
       data.wavename = dataset.wavename;
       data.files.haplotypes = dataset.haplotypes;
       data.files.mutations = dataset.mutations;
@@ -338,8 +328,30 @@
       setup();
     }
 
+    function loadJSON(file) {
+      if (file.match(/\.gz$/)) {
+        return loadGzipJSON(file)
+      } else {
+        return loadPlainJSON(file)
+      }
+    }
+
+    function loadPlainJSON(file) {
+      return d3.json(file)
+    }
+
+    function loadGzipJSON(file) {
+      return d3.buffer(file).then(gzip => {
+        var data = pako.inflate(gzip, {to: 'string'})
+        var json = JSON.parse(data)
+        return new Promise(function (resolve, reject) {
+          resolve(json)
+        })
+      })
+    }
+
     function loadDistricts() {
-      return d3.json(data.files.districts).then(districts => {
+      return loadJSON(data.files.districts).then(districts => {
         data.areas = districts.regions;
         data.prefectures = districts.locations;
         data.offset = Object.keys(data.prefectures).length + 1;
@@ -347,14 +359,14 @@
     }
 
     function loadGenome() {
-      return d3.json(data.files.annotations).then(annotations => {
+      return loadJSON(data.files.annotations).then(annotations => {
         data.genome = annotations["Genome"].shift();
         data.genes = annotations["Genes"];
       });
     }
 
     function loadMutations() {
-      return d3.json(data.files.mutations).then(mutations => {
+      return loadJSON(data.files.mutations).then(mutations => {
         data.mutations = mutations;
       });
     }
@@ -398,8 +410,8 @@
         .selectAll("option")
         .data(data.datasets)
         .join("option")
-        .attr("value", d => d.dataname)
-        .text(d => d.dataname)
+        .attr("value", d => d.wavelabel)
+        .text(d => d.wavelabel)
       // SVG canvas
       d3.select("svg#genome")
         .attr("width", data.canvas.width)
@@ -922,7 +934,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdown-dataset" style="opacity: 0.8;">
             <li>
-              <select id="dataset" class="form-select" style="border: none; padding: 10px" size="10"></select>
+              <select id="dataset" class="form-select" style="border: none; padding: 10px" size="8"></select>
             </li>
           </ul>
         </div>
@@ -989,7 +1001,7 @@
             </a>
           </button>
           <button type="button" class="btn btn-outline-primary btn-sm help-button" id="help">
-            <a href="./help" target="_blank">
+            <a href="./help-en" target="_blank" id="help-link">
               <i class="bi-question-circle help-icon"></i>
             </a>
           </button>
