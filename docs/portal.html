@@ -91,9 +91,12 @@
       nodeR: 5,
       edgeW: 2,
       haplotypes: {
-        all: new Set(),
+        set: new Set(),
+        all: [],
         selected: [],
-        visible: []
+        visible: [],
+        emerged: [],
+        ancestors: []
       }
     };
 
@@ -125,7 +128,8 @@
     }
 
     function initHaplotypes() {
-      const all = Array.from(data.haplotypes.all);
+      const all = Array.from(data.haplotypes.set);
+      data.haplotypes.all = all;
       data.haplotypes.selected = all;
       data.haplotypes.visible = all;
       data.haplotypes.emerged = all.map(haplotype => {
@@ -149,9 +153,9 @@
       drawLineage();
       drawTrace();
       drawHaplotype();
-      toggleLineage();
-      toggleTrace();
-      toggleDuration();
+//      toggleLineage();
+//      toggleTrace();
+//      toggleDuration();
     }
 
     function wipeAll() {
@@ -159,14 +163,30 @@
       d3.select("svg#chart").selectAll("*").remove()
     }
 
+    function ancestors(selected) {
+      let uniq = new Set();
+      for (let haplotypes of selected) {
+        for (let haplotype of haplotypes.split('|')) {
+console.log(haplotype);
+          while (haplotype.includes('.')) {
+            let parent = haplotype.replace(/\.[^.]+$/, '');
+            uniq.add(parent);
+            haplotype = parent;
+          }
+        }
+      }
+      return Array.from(uniq).sort();
+    }
+
     function changeHaplotypes() {
       if (this.options) {
         data.haplotypes.selected = Array.from(this.options).filter(d => d.selected).map(d => d.value);
+        // Reset if options include All or none selected
         if (data.haplotypes.selected.includes("All") || data.haplotypes.selected.size == 0) {
-          data.haplotypes.selected = Array.from(data.haplotypes.all);
+          data.haplotypes.selected = data.haplotypes.all;
         }
       } else {
-        data.haplotypes.selected = Array.from(data.haplotypes.all);
+        data.haplotypes.selected = data.haplotypes.all;
       }
       data.haplotypes.visible = data.haplotypes.selected;
       updateAll();
@@ -178,7 +198,7 @@
         const minDate = Date.parse(data.scaleX.invert(minX));
         const maxDate = Date.parse(data.scaleX.invert(maxX));
         const brushed = data.points.filter(point => {
-          if (d3.select("#duration").property("checked")) {
+          if (checkSelector("#duration")) {
             return (
               (point.firstday > minDate && point.firstday < maxDate) ||
               (point.lastday  > minDate && point.lastday  < maxDate)
@@ -234,9 +254,9 @@
     }
 
     function uniqHaplotypes(haplotypes) {
-      let unique = new Set();
-      haplotypes.map(d => unique.add(d.haplotype));
-      return Array.from(unique);
+      let uniq = new Set();
+      haplotypes.map(d => uniq.add(d.haplotype));
+      return Array.from(uniq).sort();
     }
 
     function toggleHaplotype(haplotype) {
@@ -249,17 +269,22 @@
     }
 
     function toggleLineage() {
-      if (d3.select("#lineage").property("checked")) {
+      if (checkSelector("#lineage")) {
+        data.haplotypes.ancestors = ancestors(data.haplotypes.selected)
+        data.haplotypes.visible = data.haplotypes.selected.concat(data.haplotypes.ancestors);
+        updateAll();
         showSelector(".lineages");
         d3.selectAll(".firstday.emerged").style("stroke", "#666666");
       } else {
+        data.haplotypes.visible = data.haplotypes.selected;
+        updateAll();
         hideSelector(".lineages");
         d3.selectAll(".firstday.emerged").style("stroke", "");
       }
     }
 
     function toggleTrace() {
-      if (d3.select("#trace").property("checked")) {
+      if (checkSelector("#trace")) {
         showSelector(".traces");
         showSelector(".firstday.traced");
       } else {
@@ -269,7 +294,7 @@
     }
 
     function toggleDuration() {
-      if (d3.select("#duration").property("checked")) {
+      if (checkSelector("#duration")) {
         showSelector(".durations");
         showSelector(".lastdays");
       } else {
@@ -359,7 +384,7 @@
     function loadHaplotypes() {
       const oneday = Date.parse("2022-03-10") - Date.parse("2022-03-09");
       return d3.tsv(data.files.haplotypes, row => {
-        data.haplotypes.all.add(row.haplotype);
+        data.haplotypes.set.add(row.haplotype);
         return {
           haplotype: row.haplotype,
           firstday: Date.parse(row.first),
@@ -535,9 +560,10 @@
 
     function drawGenome() {
       wipeGenome();
+      const genomeWidth = data.canvas.width;
       // Resize
-      const windowWidth = d3.select("body").node().getBoundingClientRect().width;
-      const genomeWidth = windowWidth - data.margin.left - data.margin.right;
+      //const windowWidth = d3.select("body").node().getBoundingClientRect().width;
+      //const genomeWidth = windowWidth - data.margin.left - data.margin.right;
       data.scaleG = d3.scaleLinear()
         .range([data.margin.left, genomeWidth])
         .domain([data.genome.lower, data.genome.upper]);
@@ -678,6 +704,7 @@
         .data(points)
         .join("circle")
         .attr("class", d => data.haplotypes.emerged.includes(d) ? "firstday emerged" : "firstday traced")
+        .attr("haplotype", d => d.haplotype)
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.firstday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
@@ -694,6 +721,7 @@
         .data(points)
         .join("circle")
         .attr("class", d => data.haplotypes.emerged.includes(d) ? "lastday emerged" : "lastday traced")
+        .attr("haplotype", d => d.haplotype)
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.lastday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
@@ -723,13 +751,13 @@
               .attr("stroke-dasharray", "1, 4")
               .attr("d", haploline(points));
             //if (! data.haplotypes.visible.includes(parent.haplotype)) {
-            if (d3.select("#lineage").property("checked") && ! data.haplotypes.visible.includes(parent.haplotype)) {
+            if (checkSelector("#lineage") && ! data.haplotypes.visible.includes(parent.haplotype)) {
               data.haplotypes.visible.push(parent.haplotype);
             }
           }
         }
       }
-      toggleLineage();
+//      toggleLineage();  // TODO: check side effect
     }
 
     function wipeLineage() {
@@ -749,12 +777,13 @@
             .datum(haplopoints)
             .join("path")
             .attr("class", "trace")
+            .attr("haplotype", d => d.haplotype)  // TODO: check if this works! --> seems like not
             .attr("fill", "none")
             .attr("stroke", d3.rgb("#cccccc"))
             .attr("d", haploline(haplopoints));
         }
       }
-      toggleTrace();
+//      toggleTrace();  // TODO: check side effect
     }
 
     function wipeTrace() {
@@ -790,7 +819,7 @@
     }
 
     function showInfoboxDuration(d) {
-      if (d3.select("#duration").property("checked")) {
+      if (checkSelector("#duration")) {
         showInfobox(d);
       }
     }
@@ -832,6 +861,10 @@
 
     function wipeSelector(selector) {
       d3.selectAll(selector).remove();
+    }
+
+    function checkSelector(selector) {
+      return d3.select(selector).property("checked")
     }
 
     function dumpSVG(container) {
