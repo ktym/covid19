@@ -168,10 +168,10 @@
     }
 
     function updateChart() {
-      drawLineage();
+      //drawLineage();
       drawTrace();
       drawHaplotype();
-      toggleLineage();
+      //toggleLineage();
       toggleTrace();
       toggleDuration();
     }
@@ -432,8 +432,8 @@
         .on("change", changeHaplotypes);
       d3.select("#dataset")
         .on("change", changeDataset);
-      d3.select("#lineage")
-        .on("change", toggleLineage);
+      //d3.select("#lineage")
+      //  .on("change", toggleLineage);
       d3.select("#trace")
         .on("change", toggleTrace);
       d3.select("#duration")
@@ -961,11 +961,12 @@
           </ul>
         </div>
 
+<!--
         <div class="form-check form-check-inline form-switch app-align">
           <input type="checkbox" id="lineage" class="form-check-input">
           <label class="form-check-label" for="lineage">Lineage</label>
         </div>
-
+-->
         <div class="form-check form-check-inline form-switch app-align">
           <input type="checkbox" id="trace" class="form-check-input" checked>
           <label class="form-check-label" for="trace">Trace</label>
