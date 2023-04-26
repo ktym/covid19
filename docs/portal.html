@@ -95,8 +95,7 @@
         all: [],
         selected: [],
         visible: [],
-        emerged: [],
-        ancestors: []
+        emerged: []
       }
     };
 
@@ -150,32 +149,17 @@
     }
 
     function updateChart() {
-      drawLineage();
+      //drawLineage();
       drawTrace();
       drawHaplotype();
-//      toggleLineage();
-//      toggleTrace();
-//      toggleDuration();
+      //toggleLineage();
+      toggleTrace();
+      toggleDuration();
     }
 
     function wipeAll() {
       d3.select("svg#genome").selectAll("*").remove()
       d3.select("svg#chart").selectAll("*").remove()
-    }
-
-    function ancestors(selected) {
-      let uniq = new Set();
-      for (let haplotypes of selected) {
-        for (let haplotype of haplotypes.split('|')) {
-console.log(haplotype);
-          while (haplotype.includes('.')) {
-            let parent = haplotype.replace(/\.[^.]+$/, '');
-            uniq.add(parent);
-            haplotype = parent;
-          }
-        }
-      }
-      return Array.from(uniq).sort();
     }
 
     function changeHaplotypes() {
@@ -270,14 +254,9 @@ console.log(haplotype);
 
     function toggleLineage() {
       if (checkSelector("#lineage")) {
-        data.haplotypes.ancestors = ancestors(data.haplotypes.selected)
-        data.haplotypes.visible = data.haplotypes.selected.concat(data.haplotypes.ancestors);
-        updateAll();
         showSelector(".lineages");
         d3.selectAll(".firstday.emerged").style("stroke", "#666666");
       } else {
-        data.haplotypes.visible = data.haplotypes.selected;
-        updateAll();
         hideSelector(".lineages");
         d3.selectAll(".firstday.emerged").style("stroke", "");
       }
@@ -442,8 +421,8 @@ console.log(haplotype);
         .on("change", changeHaplotypes);
       d3.select("#dataset")
         .on("change", changeDataset);
-      d3.select("#lineage")
-        .on("change", toggleLineage);
+      //d3.select("#lineage")
+      //  .on("change", toggleLineage);
       d3.select("#trace")
         .on("change", toggleTrace);
       d3.select("#duration")
@@ -757,7 +736,7 @@ console.log(haplotype);
           }
         }
       }
-//      toggleLineage();  // TODO: check side effect
+      toggleLineage();
     }
 
     function wipeLineage() {
@@ -783,7 +762,7 @@ console.log(haplotype);
             .attr("d", haploline(haplopoints));
         }
       }
-//      toggleTrace();  // TODO: check side effect
+      toggleTrace();
     }
 
     function wipeTrace() {
