@@ -307,13 +307,13 @@ console.log(haplotype);
       if (data.lang == "en") {
         data.lang = "ja";
         d3.select("html").attr("lang", "ja");
-        d3.select("#help-link").attr("href", "help-ja")
+        d3.select("#help-link").attr("href", "https://ktym.github.io/covid19/help-ja")
         wipeSelector(".axis-y");
         drawAxisY();
       } else {
         data.lang = "en";
         d3.select("html").attr("lang", "en");
-        d3.select("#help-link").attr("href", "help-en")
+        d3.select("#help-link").attr("href", "https://ktym.github.io/covid19/help-en")
         wipeSelector(".axis-y");
         drawAxisY();
       }
@@ -980,10 +980,12 @@ console.log(haplotype);
           </ul>
         </div>
 
+<!--
         <div class="form-check form-check-inline form-switch app-align">
           <input type="checkbox" id="lineage" class="form-check-input">
           <label class="form-check-label" for="lineage">Lineage</label>
         </div>
+-->
 
         <div class="form-check form-check-inline form-switch app-align">
           <input type="checkbox" id="trace" class="form-check-input" checked>
@@ -1024,7 +1026,7 @@ console.log(haplotype);
           </button>
 -->
           <button type="button" class="btn btn-outline-primary btn-sm help-button" id="help">
-            <a href="./help-ja" target="_blank" id="help-link">
+            <a href="https://ktym.github.io/covid19/help-ja" target="_blank" id="help-link">
               <i class="bi-question-circle help-icon"></i>
             </a>
           </button>
