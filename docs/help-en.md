@@ -9,6 +9,7 @@ SARS-CoV-2 HaploGraph visualizes the emergence timing and geographical transmiss
 GISAID EpiCoV data downloaded as of June 4, 2022 was used. Japan-related SARS-CoV-2 genomes were extracted based on the annotation in the metadata files. The GISAID IDs used in SARS-CoV-2 HaploGraph was summarized in [doi.org/10.55876/gis8.221004wz](http://doi.org/10.55876/gis8.221004wz).
 
 The start and end dates of each epidemic wave followed  [the records of the Ministry of Health, Labour and Welfare (MHLW) of Japan](https://www.mhlw.go.jp/content/10900000/000931584.pdf).
+
 * 2nd: 2020-06-14 to 2020-10-09
 * 3rd: 2020-10-10 to 2021-02-28
 * 4th: 2021-03-01 to 2021-06-20

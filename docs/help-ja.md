@@ -35,7 +35,7 @@ GISAIDに保存されている各SARS-CoV-2ゲノムについて、[MAFFT](https
 
 ## 使い方
 
-<img width="960" alt="Fig1" src="haprograph.png">
+<img width="960" alt="Fig1" src="haplograph.png">
 
 SARS-CoV-2 HaploGraphの、上部メニューバーの"Change dataset"から、各流行波のデータセットを選択できる。各流行波で2つのデータセット、"All"と"50%"が選択できる（"All "はGitHub版のみ）。"All "にはすべてのハプロタイプが含まれ、"50%"には、すべての頻度を高いものから低いものに並べたときに、合計が50%を超える最小の頻度のハプロタイプまでのすべてのハプロタイプが含まれる。次に、"Select haplotype(s) "で、1つ以上のハプロタイプを選択することができる。
 
