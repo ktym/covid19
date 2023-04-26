@@ -34,7 +34,7 @@ For each SARS-CoV-2 epidemic wave in Japan, the reference haplotype was determin
 
 <img width="960" alt="Fig1" src="haplograph.png">
 
-In the SARS-CoV-2 HaploGraph webpage, from the "Change dataset" on the top menu bar, the dataset for an epidemic wave can be selected. Two datasets are available for each wave: "All" and "50%". Note that "All" is only available for the GitHub version. "All" contains all haplotypes, and "50%" includes all haplotypes up to the smallest frequency haplotype whose sum exceeds 50% when all frequencies are ordered from highest to lowest. Then, the "Select haplotype(s)", one or more haplotype(s) can be selected. 
+In the SARS-CoV-2 HaploGraph webpage, from the "Change dataset" on the top menu bar, the dataset for an epidemic wave can be selected. Two datasets are available for each wave: "All" and "50%". Note that "All" is only available for the [GitHub version](https://ktym.github.io/covid19/). "All" contains all haplotypes, and "50%" includes all haplotypes up to the smallest frequency haplotype whose sum exceeds 50% when all frequencies are ordered from highest to lowest. Then, the "Select haplotype(s)", one or more haplotype(s) can be selected. 
 
 The X-axis or Y-axis indicates the sampling date or prefecture. In each prefecture (47 prefectures in total), the dots indicate the earliest or the latest sampled dates, and they are connected with a line the thickness of which is correlated with the number of entries sampled in that prefecture. A schematic representation of the SARS-CoV-2 genome is shown in a colored bar. 
 
