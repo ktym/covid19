@@ -116,7 +116,8 @@
       haplotypes: {
         all: new Set(),
         selected: [],
-        visible: []
+        visible: [],
+        parents: new Set()
       }
     };
 
@@ -142,7 +143,7 @@
         prepareHTML();
         drawAxes();
         drawArea();
-        updateAll();
+        drawAll();
       });
     }
 
@@ -157,9 +158,13 @@
       }).filter(haplotype => haplotype);  // Remove undefined from map
     }
 
-    function updateAll() {
-      updateGenome();
-      updateChart();
+    function drawAll() {
+      drawGenome();
+      drawMutations();
+      drawLineage();
+      drawTrace();
+      drawHaplotype();
+      updateVisibility();
     }
 
     function updateGenome() {
@@ -167,11 +172,8 @@
       drawMutations();
     }
 
-    function updateChart() {
-      //drawLineage();
-      drawTrace();
-      drawHaplotype();
-      //toggleLineage();
+    function updateVisibility() {
+      toggleLineage();
       toggleTrace();
       toggleDuration();
     }
@@ -191,7 +193,7 @@
         data.haplotypes.selected = Array.from(data.haplotypes.all);
       }
       data.haplotypes.visible = data.haplotypes.selected;
-      updateAll();
+      drawAll();
     }
 
     function brushHaplotypes() {
@@ -217,7 +219,7 @@
       } else {
         data.haplotypes.visible = data.haplotypes.selected;
       }
-      updateAll();
+      drawAll();
     }
 
     function pickPrefecture(d) {
@@ -232,7 +234,7 @@
       })
       data.haplotypes.visible = uniqHaplotypes(picked);
       showPrefecture(prefecture);
-      updateAll();
+      drawAll();
     }
 
     function showPrefecture(prefecture) {
@@ -267,15 +269,19 @@
       } else {
         data.haplotypes.visible = [ haplotype ];
       }
-      updateAll();
+      drawAll();
     }
 
     function toggleLineage() {
       if (d3.select("#lineage").property("checked")) {
         showSelector(".lineages");
+        showSelector(".lineage");
+        showSelector(".lineage-parent");
         d3.selectAll(".firstday.emerged").style("stroke", "#666666");
       } else {
         hideSelector(".lineages");
+        hideSelector(".lineage");
+        hideSelector(".lineage-parent");
         d3.selectAll(".firstday.emerged").style("stroke", "");
       }
     }
@@ -288,6 +294,9 @@
         hideSelector(".traces");
         hideSelector(".firstdaqy.traced");
       }
+      if (!d3.select("#lineage").property("checked")) {
+        hideSelector(".lineage-parent");
+      }
     }
 
     function toggleDuration() {
@@ -297,6 +306,9 @@
       } else {
         hideSelector(".durations");
         hideSelector(".lastdays");
+      }
+      if (!d3.select("#lineage").property("checked")) {
+        hideSelector(".lineage-parent");
       }
     }
 
@@ -432,8 +444,8 @@
         .on("change", changeHaplotypes);
       d3.select("#dataset")
         .on("change", changeDataset);
-      //d3.select("#lineage")
-      //  .on("change", toggleLineage);
+      d3.select("#lineage")
+        .on("change", toggleLineage);
       d3.select("#trace")
         .on("change", toggleTrace);
       d3.select("#duration")
@@ -659,6 +671,14 @@
       toggleDuration();
     }
 
+    function lineageClass(baseClass, target) {
+      const haplotype = typeof target === "string" ? target : target.haplotype;
+      if (data.haplotypes.parents && data.haplotypes.parents.has(haplotype)) {
+        return `${baseClass} lineage-parent`;
+      }
+      return baseClass;
+    }
+
     function wipeHaplotype() {
       wipeSelector(".firstdays");
       wipeSelector(".lastdays");
@@ -671,7 +691,10 @@
         .selectAll("path.duration")
         .data(points)
         .join("path")
-        .attr("class", d => data.haplotypes.emerged.includes(d) ? "duration emerged" : "duration traced")
+        .attr("class", d => lineageClass(
+          data.haplotypes.emerged.includes(d) ? "duration emerged" : "duration traced",
+          d
+        ))
         .attr("fill", "none")
         .attr("stroke", d => data.pallet(d.haplotype))
         .attr("stroke-width", d => Math.log(d.total))
@@ -692,7 +715,10 @@
         .selectAll("circle.firstday")
         .data(points)
         .join("circle")
-        .attr("class", d => data.haplotypes.emerged.includes(d) ? "firstday emerged" : "firstday traced")
+        .attr("class", d => lineageClass(
+          data.haplotypes.emerged.includes(d) ? "firstday emerged" : "firstday traced",
+          d
+        ))
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.firstday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
@@ -708,7 +734,10 @@
         .selectAll("circle.lastday")
         .data(points)
         .join("circle")
-        .attr("class", d => data.haplotypes.emerged.includes(d) ? "lastday emerged" : "lastday traced")
+        .attr("class", d => lineageClass(
+          data.haplotypes.emerged.includes(d) ? "lastday emerged" : "lastday traced",
+          d
+        ))
         .attr("r", data.nodeR)
         .attr("cx", d => data.scaleX(d.lastday) - data.canvas.magic)
         .attr("cy", d => data.scaleY(data.offset - data.prefectures[d.prefecture].code))
@@ -720,31 +749,67 @@
 
     function drawLineage() {
       wipeLineage();
+      const lineageVisible = new Set(data.haplotypes.visible);
+      data.haplotypes.parents = new Set();
       d3.select("svg#chart").append("g").attr("class", "lineages");
-      for (let childId of data.haplotypes.visible) {
-        const parentId = childId.replace(/\.[^.]+$/, '');
-        if (parentId != childId) {
-          const child = data.haplotypes.emerged.filter(point => point.haplotype == childId).shift();
-          const parent = data.haplotypes.emerged.filter(point => point.haplotype == parentId).shift();
-          if (parent) {
-            const points = [parent, child]
-            d3.select("svg#chart").select(".lineages")
-              .append("path")
-              .datum(points)
-              .join("path")
-              .attr("class", "lineage")
-              .attr("fill", "none")
-              .attr("stroke", d3.rgb("#666666"))
-              .attr("stroke-dasharray", "1, 4")
-              .attr("d", haploline(points));
-            //if (! data.haplotypes.visible.includes(parent.haplotype)) {
-            if (d3.select("#lineage").property("checked") && ! data.haplotypes.visible.includes(parent.haplotype)) {
-              data.haplotypes.visible.push(parent.haplotype);
-            }
+      const drawParentLineage = (childIds, childId) => {
+        const child = data.haplotypes.emerged.filter(point => point.haplotype == childIds).shift();
+        const parent = findParent(childId);
+        if (!child || !parent) {
+          return;
+        }
+        const points = [parent, child];
+        d3.select("svg#chart").select(".lineages")
+          .append("path")
+          .datum(points)
+          .join("path")
+          .attr("class", "lineage")
+          .attr("fill", "none")
+          .attr("stroke", d3.rgb("#666666"))
+          .attr("stroke-dasharray", "1, 4")
+          .attr("d", haploline(points));
+        if (!lineageVisible.has(parent.haplotype)) {
+          data.haplotypes.parents.add(parent.haplotype);
+          if (!data.haplotypes.visible.includes(parent.haplotype)) {
+            data.haplotypes.visible.push(parent.haplotype);
           }
         }
+      };
+      for (let childIds of data.haplotypes.visible) {
+        childIds.split("|").map(childId => drawParentLineage(childIds, childId));
       }
       toggleLineage();
+    }
+
+    function findParent(childId) {
+      const candidates = getParentCandidates(childId);
+      for (let candidate of candidates) {
+        let parent = data.haplotypes.emerged
+          .filter(point => point.haplotype.split("|").includes(candidate))
+          .shift();
+        if (parent) {
+          return parent;
+        }
+      }
+      return null;
+    }
+
+    function getParentCandidates(childId) {
+      const segments = childId.split(".");
+      const candidates = [];
+      let end = segments.length;
+      while (end > 1) {
+        let drop = 1;
+        if (segments[end - 2] === "x") {
+          drop = 2;
+        }
+        end -= drop;
+        if (end <= 0) {
+          break;
+        }
+        candidates.push(segments.slice(0, end).join("."));
+      }
+      return candidates;
     }
 
     function wipeLineage() {
@@ -763,7 +828,7 @@
             .append("path")
             .datum(haplopoints)
             .join("path")
-            .attr("class", "trace")
+            .attr("class", lineageClass("trace", haplotype))
             .attr("fill", "none")
             .attr("stroke", d3.rgb("#cccccc"))
             .attr("d", haploline(haplopoints));
@@ -961,12 +1026,12 @@
           </ul>
         </div>
 
-<!--
+
         <div class="form-check form-check-inline form-switch app-align">
           <input type="checkbox" id="lineage" class="form-check-input">
           <label class="form-check-label" for="lineage">Lineage</label>
         </div>
--->
+
         <div class="form-check form-check-inline form-switch app-align">
           <input type="checkbox" id="trace" class="form-check-input" checked>
           <label class="form-check-label" for="trace">Trace</label>
